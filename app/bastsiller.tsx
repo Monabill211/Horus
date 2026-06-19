@@ -55,7 +55,7 @@ const products = [
 
 export default function BestSiller() {
   return (
-    <section dir="rtl" className="px-6 md:px-10 py-16 font-[Cairo,sans-serif]" style={{padding:"64px"}}>
+    <section dir="rtl" className="bg-white px-6 md:px-10 py-16 font-[Cairo,sans-serif] " style={{padding:"64px"}}>
       <Reveal>
       <h2 className="text-2xl  text-center  md:text-3xl font-bold tracking-wide text-black mb-9" style={{marginBottom:"36px"}}>
     الاكثر مبيعا من حورس

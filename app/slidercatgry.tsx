@@ -48,7 +48,7 @@ className="group cursor-pointer w-full"          >
 />
             </div>
 
-            <h3 className="text-center mt-5 text-xl font-semibold group-hover:text-gray-500 transition">
+            <h3 className="text-center mt-5 text-black text-xl font-semibold group-hover:text-gray-500 transition">
               {item.name}
             </h3>
           </div>
