@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ProductCardAr, { type Product } from "./ProductCardAr";
-import Reveal from "./Reveal";
+import ProductCardAr, { type Product } from "../ProductCardAr";
+import Reveal from "../Reveal";
 
 type ShopProduct = Product & {
   category: "تيشيرت" | "بنطلون" | "شورت" | "ترنج";
