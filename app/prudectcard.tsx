@@ -89,9 +89,9 @@ export default function ProductCardAr({ product }: { product: Product }) {
         <button
           onClick={handleAddToCart}
           style={{padding:"12px"}}
-          className={`absolute bottom-0 right-0 left-0 py-3.5 text-[16px] cursor-pointer font-bold text-yellow-400 tracking-wide z-10 transition-all duration-300 ${
-            hovered ? "translate-y-0" : "translate-y-full"
-          } ${added ? "bg-[#c9a84c] text-[#0e0b07]" : "bg-[#0e0b07] text-[#e8dcc8] hover:bg-[#1a1410]"}`}
+          className={`absolute bottom-0 right-0 left-0 py-3.5 text-[16px] cursor-pointer font-bold text-yellow-400 tracking-wide z-10 transition-all duration-300 
+           
+           ${added ? "bg-[#c9a84c] text-[#0e0b07]" : "bg-[#0e0b07] text-[#e8dcc8] hover:bg-[#1a1410]"}`}
         >
           {added ? "تمت الإضافة ✓" : "أضف للسلة"}
         </button>

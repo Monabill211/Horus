@@ -13,7 +13,7 @@ const products = [
     image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
-    href: "/products/pharaoh-tee",
+    href: "/productdetel",
   },
   {
     id: "2",
@@ -25,7 +25,7 @@ const products = [
     image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (3).jpeg",
     tag: "جديد" as const,
     sizes: ["S", "M", "L"],
-    href: "/products/nile-cargo",
+    href: "/productdetel",
   },
   {
     id: "3",
@@ -36,7 +36,7 @@ const products = [
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (2).jpeg",
     tag: "محدود" as const,
     sizes: ["M", "L", "XL"],
-    href: "/products/desert-shorts",
+    href: "/productdetel",
   },
   {
     id: "4",
@@ -47,7 +47,7 @@ const products = [
     image: "/imgs/WhatsApp Image 2026-05-11 at 10.31.33 PM.jpeg",
     tag: "خصم" as const,
     sizes: ["48", "50", "52", "54"],
-    href: "/products/horus-suit",
+    href: "/productdetel",
   },
 ];
 
