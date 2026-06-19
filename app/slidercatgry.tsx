@@ -26,7 +26,7 @@ const categories = [
 export default function Categories() {
   return (
     <Reveal>
-    <section className="flex flex-col items-center gap-7 py-20 bg-white " style={{padding: '50px'}}>
+    <section className="flex flex-col items-center gap-7 py-20 bg-white text-black " style={{padding: '50px'}}>
       <h2 className="text-4xl font-bold text-center mb-12">
         تسوق من حورس علي حسب الفئة  
       </h2>
