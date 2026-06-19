@@ -9,6 +9,10 @@ const navLinks = [
   { label: "المتجر", href: "/collections" },
   { label: "من حورس", href: "/about" },
   { label: "تتبع شحنتك", href: "/trakingorder" },
+  { label: "الشحن والاسترجاع", href: "/ShippingPolicy" },
+  { label: "دليل المقاسات", href: "/size" },
+  { label: "تعليمات العناية", href: "/care" },
+
 ];
 
 export default function HeaderAr() {
