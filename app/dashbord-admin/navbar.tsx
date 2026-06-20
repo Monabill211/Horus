@@ -1,32 +1,40 @@
 "use client";
 
-import { Moon, Languages, Bell } from "lucide-react";
+import { Moon, Globe } from "lucide-react";
 
-export default function Header() {
+export default function Topbar({ title }: { title: string }) {
   return (
-    <header className="h-16 bg-white border-b flex items-center justify-between px-8" style={{marginBottom:"30px"}}  >
-
-      <div className="flex items-center gap-6" style={{margin:"1px 50px"}}>
-        <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold"  style={{margin:"50px"}}>
-          A
-        </div>
-
-        <div>
-          <h3 className="font-semibold">Horas</h3>
-          <p className="text-sm text-gray-500">Admin</p>
-        </div>
-
+    <header
+      className="bg-white border-b border-[#1a1410]/8 flex items-center justify-between"
+      style={{ padding: "14px 24px" }}
+    >
+      <div>
+        <h2 className="font-['Cinzel',serif] text-[16px] tracking-wide">{title}</h2>
+        <p className="text-[11px] text-[#8a7e6f]">٢٠٢٦/٦/٢٠</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <Bell />
+        <button className="text-[#5c5346] hover:text-[#c9a84c]">
+          <Moon size={17} />
+        </button>
 
-        <div className="text-right">
-          <h2 className="font-bold text-2xl">لوحة التحكم</h2>
-          <p className="text-gray-500">مرحباً بك</p>
+        <div className="flex items-center gap-1.5 text-[12px] text-[#5c5346]">
+          <Globe size={14} /> EN
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <div
+            className="rounded-full bg-[#c9a84c]/20 flex items-center justify-center text-[#171310] font-bold text-[12px]"
+            style={{ width: "32px", height: "32px" }}
+          >
+            أ
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-[12.5px] font-semibold leading-none">ahmed</p>
+            <p className="text-[10px] text-[#8a7e6f]">Admin</p>
+          </div>
         </div>
       </div>
-
     </header>
   );
 }
