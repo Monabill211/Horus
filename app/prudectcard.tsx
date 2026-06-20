@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-type Product = {
+export type Product = {
   id: string;
   name: string;
   price: number;
@@ -20,7 +20,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
   const [wishlist, setWishlist] = useState(false);
   const [added, setAdded] = useState(false);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {  
     e.preventDefault();
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
