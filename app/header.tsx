@@ -8,6 +8,7 @@ const navLinks = [
   { label: "الفئات ", href: "/catgry" },
   { label: "المتجر", href: "/shop" },
   { label: "من حورس", href: "/about" },
+  { label: "تواصل مع حورس", href: "/contact" },
   { label: "تتبع شحنتك", href: "/trakingorder" },
   { label: "الشحن والاسترجاع", href: "/ShippingPolicy" },
   { label: "دليل المقاسات", href: "/size" },
