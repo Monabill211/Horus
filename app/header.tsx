@@ -6,7 +6,7 @@ import Link from "next/link";
 const navLinks = [
   { label: "الرئيسية", href: "/" },
   { label: "الفئات ", href: "/catgry" },
-  { label: "المتجر", href: "/collections" },
+  { label: "المتجر", href: "/shop" },
   { label: "من حورس", href: "/about" },
   { label: "تتبع شحنتك", href: "/trakingorder" },
   { label: "الشحن والاسترجاع", href: "/ShippingPolicy" },
@@ -41,7 +41,7 @@ export default function HeaderAr() {
         </Link>
 
         {/* الناف بار - ديسكتوب */}
-        <nav className="hidden md:flex items-center  gap-8">
+        <nav className="hidden md:flex items-center gap-8  ">
           {navLinks.map((link) => (
             <Link
               key={link.href}

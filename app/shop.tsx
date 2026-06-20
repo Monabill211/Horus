@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ProductCardAr, { type Product } from "./ProductCardAr";
+import ProductCardAr, { type Product } from "./prudectcard";
 import Reveal from "./Reveal";
 
 type ShopProduct = Product & {
