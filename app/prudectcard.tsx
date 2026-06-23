@@ -87,7 +87,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
             {product.price.toLocaleString()} ج.م
           </span>
         </div>
-<div className="flex justify-between">
+<div className="md:flex md:justify-between">
   <SelectField
     className="w-[100px]"
     value={selectedColor}
@@ -138,7 +138,7 @@ function SelectField({
       
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-[100px] border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
+        className="w-full md:w-[100px] border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
         style={{ padding: "10px 32px 10px 12px" }}
       >
         {options.map((o) => (

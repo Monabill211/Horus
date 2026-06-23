@@ -59,8 +59,7 @@ export default function RoundemProducts() {
       منتاجات  حورس
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 bg-white">
-        {products.map((p) => (
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 bg-white">        {products.map((p) => (
           <ProductCardAr key={p.id} product={p} />
         ))}
       </div>
