@@ -89,7 +89,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
         </div>
 
         {/* اختيار اللون والمقاس - جنب بعض على كل الشاشات بما فيها الموبايل */}
-        <div className="grid grid-cols-2 gap-2" style={{ marginBottom: "10px" }}>
+        <div className="md:grid grid-cols-2 gap-2" style={{ marginBottom: "10px" }}>
           <SelectField value={selectedColor} onChange={setSelectedColor} options={colors} />
           <SelectField value={selectedSize} onChange={setSelectedSize} options={sizes} />
         </div>
