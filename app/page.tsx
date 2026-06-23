@@ -5,13 +5,13 @@ import CategoriesSlider from "./slidercatgry";
 import BestSiller from "./bastsiller";
 import RoundemProducts from "./roundemproduct";
 import FaqAndPayment from "./Faqandpayment ";
+import EditorialBanner from "./Editorialbanner";
 export default function Home() {
   return (
   <div lang="ar" dir="rtl">
     <Header />
     <Hero />
-<CategoriesSlider />
-<BestSiller />
+<EditorialBanner />
 <RoundemProducts />
 <FaqAndPayment/>
     <Footer />

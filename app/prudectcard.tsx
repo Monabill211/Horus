@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export type Product = {
   id: string;
@@ -10,50 +11,48 @@ export type Product = {
   originalPrice?: number;
   image: string;
   hoverImage?: string;
-  tag?: "جديد" | "خصم" | "محدود";
-  sizes: string[];
+  sizes?: string[];
+  colors?: string[];
   href: string;
 };
 
+const DEFAULT_SIZES = ["S", "M", "L", "XL"];
+const DEFAULT_COLORS = ["أسود", "أبيض", "ذهبي"];
+
 export default function ProductCardAr({ product }: { product: Product }) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
-  const [wishlist, setWishlist] = useState(false);
-  const [added, setAdded] = useState(false);
+  const sizes = product.sizes?.length ? product.sizes : DEFAULT_SIZES;
+  const colors = product.colors?.length ? product.colors : DEFAULT_COLORS;
+  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [adding, setAdding] = useState(false);
 
-  const handleAddToCart = (e: React.MouseEvent) => {  
-    e.preventDefault();
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
-
-  const discount = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : null;
-
-  const tagStyles: Record<string, string> = {
-    "جديد": "bg-[#0e0b07] text-[#c9a84c]",
-    "خصم": "bg-[#c9a84c] text-[#0e0b07]",
-    "محدود": "bg-transparent border border-[#c9a84c] text-[#c9a84c]",
+  const handleAddToCart = () => {
+    setAdding(true);
+    // هنا تحط منطق إضافة المنتج (المقاس + اللون) للسلة الحقيقية قبل التحويل
+    setTimeout(() => {
+      router.push("/checkout");
+    }, 500);
   };
 
   return (
     <div
       dir="rtl"
-      className="flex flex-col w-full font-[Cairo,sans-serif] rounded-2xl "
+      className="flex flex-col w-full border border-[#1a1410]/15 font-[Cairo,sans-serif]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* الصورة */}
-      <Link href={product.href} className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
 
+      {/* الصورة - بتتبدل عند الـ hover */}
+      <Link href={product.href} className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
         <img
           src={product.image}
           alt={product.name}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ${
             hovered && product.hoverImage ? "opacity-0" : "opacity-100"
-          } group-hover:scale-105`}
+          }`}
         />
-
         {product.hoverImage && (
           <img
             src={product.hoverImage}
@@ -63,85 +62,101 @@ export default function ProductCardAr({ product }: { product: Product }) {
             }`}
           />
         )}
-
-        {/* التاج */}
-        {product.tag && (
-          <span
-            className={`absolute top-3 rounded-[5px] right-3 text-[10px] tracking-wide px-2.5 py-1 z-10 ${tagStyles[product.tag]}`}
-          style={{padding:"7px"}}
-          >
-            {product.tag === "خصم" && discount ? `${discount}%-` : product.tag}
-          </span>
-        )}
-
-        {/* المفضلة */}
-        <button
-          onClick={(e) => { e.preventDefault(); setWishlist((v) => !v); }}
-          aria-label="إضافة للمفضلة"
-          className={`absolute top-3 left-3 z-10 w-9 h-9 flex items-center justify-center backdrop-blur-sm transition-colors ${
-            wishlist ? " text-[#c9a84c]" : " text-[#1a1410]  hover:text-[#c9a84c]"
-          }`}
-        >
-          <HeartIcon filled={wishlist} />
-        </button>
-
-        {/* إضافة للسلة */}
-        <button
-          onClick={handleAddToCart}
-          style={{padding:"12px"}}
-          className={`absolute bottom-0 right-0 left-0 py-3.5 text-[16px] cursor-pointer font-bold text-yellow-400 tracking-wide z-10 transition-all duration-300 
-           
-           ${added ? "bg-[#c9a84c] text-[#0e0b07]" : "bg-[#0e0b07] text-[#e8dcc8] hover:bg-[#1a1410]"}`}
-        >
-          {added ? "تمت الإضافة ✓" : "أضف للسلة"}
-        </button>
-
       </Link>
 
       {/* المعلومات */}
-      <div className="bg-white px-4 py-3.5 flex flex-col gap-2.5" style={{padding:"20px"}}>
+      <div className="flex flex-col" style={{ padding: "16px" }}>
+
+        {/* الاسم */}
         <Link
           href={product.href}
-          className="text-[18px] font-black text-center tracking-wide text-[#1a1410] hover:text-[#c9a84c] transition-colors truncate"
+          className="font-['Cinzel',serif] text-[12.5px] font-bold tracking-[0.03em] text-[#1a1410] hover:text-[#c9a84c] transition-colors leading-snug"
+          style={{ marginBottom: "8px" }}
         >
           {product.name}
         </Link>
 
-        <div className="flex items-center justify-between gap-2">
-          {/* المقاسات */}
-          <div className="flex gap-1 flex-wrap">
-            {product.sizes.map((s) => (
-              <span
-                key={s}
-                className="text-[10px] text-[#7a6e60] border border-[#d4c9b0] px-1.5 py-0.5"
-                style={{padding:"7px"}}
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-
-          {/* السعر */}
-          <div className="flex flex-col items-end gap-0.5">
-            {product.originalPrice && (
-              <span className="text-[11px] text-[#b0a090] line-through">
-                {product.originalPrice.toLocaleString()} ج.م
-              </span>
-            )}
-            <span className="text-[14px] font-bold text-[#1a1410]">
-              {product.price.toLocaleString()} ج.م
+        {/* السعر */}
+        <div className="flex items-center gap-2" style={{ marginBottom: "14px" }}>
+          {product.originalPrice && (
+            <span className="text-[12px] text-[#b0a090] line-through">
+              {product.originalPrice.toLocaleString()} ج.م
             </span>
-          </div>
+          )}
+          <span className="text-[14px] font-bold text-[#1a1410]">
+            {product.price.toLocaleString()} ج.م
+          </span>
         </div>
+<div className="flex justify-between">
+  <SelectField
+    className="w-[100px]"
+    value={selectedColor}
+    onChange={setSelectedColor}
+    options={colors}
+  />
+
+  <SelectField
+    className="w-[100px]"
+    value={selectedSize}
+    onChange={setSelectedSize}
+    options={sizes}
+  />
+</div>
+        {/* أضف للسلة */}
+        <button
+          onClick={handleAddToCart}
+          disabled={adding}
+          className={`w-full font-['Cinzel',serif] text-[11.5px] font-bold tracking-[0.15em] transition-colors ${
+            adding ? "bg-[#c9a84c] text-[#0e0b07]" : "bg-[#0e0b07] text-white hover:bg-[#1a1410]"
+          }`}
+          style={{ padding: "12px 0", borderTop: "2px solid #c9a84c" }}
+        >
+          {adding ? "جاري التحويل للسلة..." : "أضف للسلة"}
+        </button>
       </div>
     </div>
   );
 }
 
-function HeartIcon({ filled }: { filled: boolean }) {
+/* ─────────────────────────────────────────
+   حقل اختيار (مقاس / لون) - نفس الستايل
+───────────────────────────────────────── */
+function SelectField({
+  value,
+  onChange,
+  options,
+}: {
+    className?: string;
+
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+}) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
-      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-    </svg>
+    <div className="relative" style={{ marginBottom: "10px" }}>
+      <select
+      
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-[100px] border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
+        style={{ padding: "10px 32px 10px 12px" }}
+      >
+        {options.map((o) => (
+          <option key={o} value={o}>{o}</option>
+        ))}
+      </select>
+      <svg
+        width="11"
+        height="11"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#1a1410"
+        strokeWidth="2"
+        className="absolute pointer-events-none"
+        style={{ left: "12px", top: "50%", transform: "translateY(-50%)" }}
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
   );
 }
