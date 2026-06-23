@@ -93,10 +93,10 @@ const [showOptions, setShowOptions] = useState(false);
   {!showOptions ? (
     <button
       onClick={() => setShowOptions(true)}
-      className="w-full flex items-center font-bold justify-between border border-black bg-white hover:bg-gray-50 transition"
+      className="w-full flex items-center font-bold justify-around border border-black bg-white hover:bg-gray-50 transition"
       style={{
-        padding: "5px 15px",
-        fontSize: "14px",
+        padding: "4px 8px",
+        fontSize: "12px",
         cursor: "pointer",
       }}
     >
