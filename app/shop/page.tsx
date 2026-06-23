@@ -3,8 +3,6 @@
 import { useMemo, useState } from "react";
 import ProductCardAr, { type Product } from "../prudectcard";
 import Reveal from "../Reveal";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
 
 type ShopProduct = Product & {
   category: "تيشيرت" | "بنطلون" | "شورت" | "ترنج";
@@ -34,11 +32,11 @@ const products: ShopProduct[] = [
     price: 850,
     originalPrice: 1200,
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
-    hoverImage: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80",
     sizes: ["S", "M", "L", "XL"],
     href: "/products/pharaoh-tee",
     category: "تيشيرت",
     color: "أسود",
+    colors: ["أسود"],
   },
   {
     id: "2",
@@ -49,17 +47,18 @@ const products: ShopProduct[] = [
     href: "/products/classic-white-tee",
     category: "تيشيرت",
     color: "أبيض",
+    colors: ["أبيض"],
   },
   {
     id: "3",
     name: "بنطلون النيل الكارجو",
     price: 1450,
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
-    hoverImage: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80",
     sizes: ["S", "M", "L"],
     href: "/products/nile-cargo",
     category: "بنطلون",
     color: "بيج",
+    colors: ["بيج"],
   },
   {
     id: "4",
@@ -70,6 +69,7 @@ const products: ShopProduct[] = [
     href: "/products/navy-street-pants",
     category: "بنطلون",
     color: "كحلي",
+    colors: ["كحلي"],
   },
   {
     id: "5",
@@ -80,6 +80,7 @@ const products: ShopProduct[] = [
     href: "/products/desert-shorts",
     category: "شورت",
     color: "بيج",
+    colors: ["بيج"],
   },
   {
     id: "6",
@@ -90,6 +91,7 @@ const products: ShopProduct[] = [
     href: "/products/black-sport-shorts",
     category: "شورت",
     color: "أسود",
+    colors: ["أسود"],
   },
   {
     id: "7",
@@ -97,11 +99,11 @@ const products: ShopProduct[] = [
     price: 2100,
     originalPrice: 2600,
     image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
-    hoverImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80",
     sizes: ["M", "L", "XL"],
     href: "/products/horus-tracksuit",
     category: "ترنج",
     color: "ذهبي",
+    colors: ["ذهبي"],
   },
   {
     id: "8",
@@ -112,6 +114,7 @@ const products: ShopProduct[] = [
     href: "/products/classic-black-tracksuit",
     category: "ترنج",
     color: "أسود",
+    colors: ["أسود"],
   },
   {
     id: "9",
@@ -122,6 +125,7 @@ const products: ShopProduct[] = [
     href: "/products/gold-embroidered-tee",
     category: "تيشيرت",
     color: "ذهبي",
+    colors: ["ذهبي"],
   },
   {
     id: "10",
@@ -132,6 +136,7 @@ const products: ShopProduct[] = [
     href: "/products/black-slim-pants",
     category: "بنطلون",
     color: "أسود",
+    colors: ["أسود"],
   },
 ];
 
@@ -162,9 +167,6 @@ export default function Shop() {
   const hasActiveFilters = activeCategory !== "الكل" || activeColors.length > 0;
 
   return (
-    <>
-    <HeaderAr />
-  
     <section dir="rtl" className="bg-[#f5f0e8] font-['Cormorant_Garamond',serif]">
       <div className="max-w-7xl mx-auto" style={{ padding: "40px clamp(20px, 4vw, 40px) 80px" }}>
 
@@ -223,7 +225,7 @@ export default function Shop() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-0">
                 {filtered.map((p, i) => (
                   <Reveal key={p.id} delay={(i % 6) * 60}>
                     <ProductCardAr product={p} />
@@ -277,8 +279,6 @@ export default function Shop() {
         </div>
       </div>
     </section>
-      <FooterAr />
-    </>
   );
 }
 

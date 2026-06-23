@@ -87,21 +87,13 @@ export default function ProductCardAr({ product }: { product: Product }) {
             {product.price.toLocaleString()} ج.م
           </span>
         </div>
-<div className="md:flex md:justify-between">
-  <SelectField
-    className="w-[100px]"
-    value={selectedColor}
-    onChange={setSelectedColor}
-    options={colors}
-  />
 
-  <SelectField
-    className="w-[100px]"
-    value={selectedSize}
-    onChange={setSelectedSize}
-    options={sizes}
-  />
-</div>
+        {/* اختيار اللون والمقاس - جنب بعض على كل الشاشات بما فيها الموبايل */}
+        <div className="grid grid-cols-2 gap-2" style={{ marginBottom: "10px" }}>
+          <SelectField value={selectedColor} onChange={setSelectedColor} options={colors} />
+          <SelectField value={selectedSize} onChange={setSelectedSize} options={sizes} />
+        </div>
+
         {/* أضف للسلة */}
         <button
           onClick={handleAddToCart}
@@ -126,19 +118,16 @@ function SelectField({
   onChange,
   options,
 }: {
-    className?: string;
-
   value: string;
   onChange: (v: string) => void;
   options: string[];
 }) {
   return (
-    <div className="relative" style={{ marginBottom: "10px" }}>
+    <div className="relative">
       <select
-      
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full md:w-[100px] border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
+        className="w-full border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
         style={{ padding: "10px 32px 10px 12px" }}
       >
         {options.map((o) => (
