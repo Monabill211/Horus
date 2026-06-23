@@ -45,7 +45,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
     >
 
       {/* الصورة - بتتبدل عند الـ hover */}
-      <Link href={product.href} className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
+      <Link href="./productdetel  " className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
         <img
           src={product.image}
           alt={product.name}
@@ -69,7 +69,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
 
         {/* الاسم */}
         <Link
-          href={product.href}
+          href="./productdetel"
           className="font-['Cinzel',serif] text-[12.5px] font-bold tracking-[0.03em] text-[#1a1410] hover:text-[#c9a84c] transition-colors leading-snug"
           style={{ marginBottom: "8px" }}
         >
