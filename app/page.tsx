@@ -12,7 +12,7 @@ export default function Home() {
   <div lang="ar" dir="rtl">
     <Header />
     <Hero />
-<EditorialBanner />
+{/* <EditorialBanner /> */}
 <RoundemProducts />
 <SocialFAB />
 <FaqAndPayment/>

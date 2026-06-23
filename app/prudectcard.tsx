@@ -27,7 +27,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [adding, setAdding] = useState(false);
-
+const [showOptions, setShowOptions] = useState(false);
   const handleAddToCart = () => {
     setAdding(true);
     // هنا تحط منطق إضافة المنتج (المقاس + اللون) للسلة الحقيقية قبل التحويل
@@ -39,13 +39,13 @@ export default function ProductCardAr({ product }: { product: Product }) {
   return (
     <div
       dir="rtl"
-      className="flex flex-col w-full border border-[#1a1410]/15 font-[Cairo,sans-serif]"
+      className="flex flex-col w-full  font-[Cairo,sans-serif] border border-black"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
 
       {/* الصورة - بتتبدل عند الـ hover */}
-      <Link href="./productdetel  " className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
+      <Link href={product.href} className="relative block overflow-hidden aspect-[3/4] bg-[#ede8df]">
         <img
           src={product.image}
           alt={product.name}
@@ -69,39 +69,81 @@ export default function ProductCardAr({ product }: { product: Product }) {
 
         {/* الاسم */}
         <Link
-          href="./productdetel"
-          className="font-['Cinzel',serif] text-[12.5px] font-bold tracking-[0.03em] text-[#1a1410] hover:text-[#c9a84c] transition-colors leading-snug"
-          style={{ marginBottom: "8px" }}
+          href={product.href}
+          className="font-bold text-[15px] tracking-[0.01em] text-[#1a1410] hover:text-[#c9a84c] transition-colors"
+          style={{ marginBottom: "8px", lineHeight: "1.35" }}
         >
           {product.name}
         </Link>
 
         {/* السعر */}
-        <div className="flex items-center gap-2" style={{ marginBottom: "14px" }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: "16px" }}>
           {product.originalPrice && (
-            <span className="text-[12px] text-[#b0a090] line-through">
+            <span className="text-[13px] text-[#8a8a8a] line-through">
               {product.originalPrice.toLocaleString()} ج.م
             </span>
           )}
-          <span className="text-[14px] font-bold text-[#1a1410]">
+          <span className="text-[15px] text-[#1a1410]">
             {product.price.toLocaleString()} ج.م
           </span>
         </div>
 
-        {/* اختيار اللون والمقاس - جنب بعض على كل الشاشات بما فيها الموبايل */}
-        <div className="md:grid grid-cols-2 gap-2" style={{ marginBottom: "10px" }}>
-          <SelectField value={selectedColor} onChange={setSelectedColor} options={colors} />
-          <SelectField value={selectedSize} onChange={setSelectedSize} options={sizes} />
-        </div>
+        {/* اختيار اللون والمقاس - جنب بعض، ملاصقين للزرار تحت */}
+<div style={{ marginBottom: "0" }}>
+  {!showOptions ? (
+    <button
+      onClick={() => setShowOptions(true)}
+      className="w-full flex items-center justify-between border border-black bg-white hover:bg-gray-50 transition"
+      style={{
+        padding: "12px 16px",
+        fontSize: "14px",
+        cursor: "pointer",
+      }}
+    >
+      <span>SELECT OPTION</span>
 
-        {/* أضف للسلة */}
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+  ) : (
+    <div className="flex flex-col gap-0">
+
+      <SelectField
+        value={selectedSize}
+        onChange={setSelectedSize}
+        options={sizes}
+        position="right"
+      />
+
+      <SelectField
+        value={selectedColor}
+        onChange={setSelectedColor}
+        options={colors}
+        position="left"
+      />
+
+    </div>
+  )}
+</div>
+
+        {/* أضف للسلة - ملاصق للسيلكت من غير فراغ */}
         <button
           onClick={handleAddToCart}
           disabled={adding}
-          className={`w-full font-['Cinzel',serif] text-[11.5px] font-bold tracking-[0.15em] transition-colors ${
-            adding ? "bg-[#c9a84c] text-[#0e0b07]" : "bg-[#0e0b07] text-white hover:bg-[#1a1410]"
+          className={`w-full text-[13px] font-bold tracking-[0.08em] border border-t-0 transition-colors ${
+            adding
+              ? "bg-[#c9a84c] text-[#0e0b07] border-[#c9a84c]"
+              : "bg-[#0e0b07] text-white border-[#0e0b07] hover:bg-[#1a1410]"
           }`}
-          style={{ padding: "12px 0", borderTop: "2px solid #c9a84c" }}
+          style={{ padding: "13px 0" }}
         >
           {adding ? "جاري التحويل للسلة..." : "أضف للسلة"}
         </button>
@@ -111,24 +153,28 @@ export default function ProductCardAr({ product }: { product: Product }) {
 }
 
 /* ─────────────────────────────────────────
-   حقل اختيار (مقاس / لون) - نفس الستايل
+   حقل اختيار (مقاس / لون) - نفس الستايل، بحدود ملاصقة لبعض
 ───────────────────────────────────────── */
 function SelectField({
   value,
   onChange,
   options,
+  position,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: string[];
+  position: "right" | "left";
 }) {
   return (
     <div className="relative">
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c]"
-        style={{ padding: "10px 32px 10px 12px" }}
+        className={`w-full border border-[#1a1410]/25 text-[12.5px] text-[#1a1410] bg-white outline-none appearance-none focus:border-[#c9a84c] ${
+          position === "right" ? "border-l-0" : ""
+        }`}
+        style={{ padding: "11px 32px 11px 12px" }}
       >
         {options.map((o) => (
           <option key={o} value={o}>{o}</option>

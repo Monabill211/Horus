@@ -17,6 +17,30 @@ const products = [
   },
   {
     id: "2",
+    name: "تيشيرت الفرعون أوفرسايز",
+    price: 850,
+    originalPrice: 1200,
+    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+    hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
+    tag: "خصم" as const,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["أسود", "ذهبي"],
+    href: "/products/pharaoh-tee",
+  },
+  {
+    id: "3",
+    name: "تيشيرت الفرعون أوفرسايز",
+    price: 850,
+    originalPrice: 1200,
+    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+    hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
+    tag: "خصم" as const,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["أسود", "ذهبي"],
+    href: "/products/pharaoh-tee",
+  },
+  {
+    id: "4",
     name: "بنطلون النيل الكارجو",
     price: 1450,
     image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (2).jpeg",
@@ -27,7 +51,7 @@ const products = [
     href: "/products/nile-cargo",
   },
   {
-    id: "3",
+    id: "5",
     name: "شورت صحراوي كتان",
     price: 650,
     image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM.jpeg",
@@ -39,7 +63,7 @@ const products = [
     href: "/products/desert-shorts",
   },
   {
-    id: "4",
+    id: "6",
     name: "بدلة حورس الكاملة",
     price: 4200,
     originalPrice: 5500,
@@ -50,6 +74,29 @@ const products = [
     sizes: ["48", "50", "52", "54"],
     colors: ["أسود", "ذهبي"],
     href: "/products/horus-suit",
+  },
+    {
+    id: "7",
+    name: "شورت صحراوي كتان",
+    price: 650,
+    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM.jpeg",
+    hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+
+    tag: "محدود" as const,
+    sizes: ["M", "L", "XL"],
+    colors: ["أسود", "ذهبي"],
+    href: "/products/desert-shorts",
+  },  {
+    id: "",
+    name: "شورت صحراوي كتان",
+    price: 650,
+    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM.jpeg",
+    hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+
+    tag: "محدود" as const,
+    sizes: ["M", "L", "XL"],
+    colors: ["أسود", "ذهبي"],
+    href: "/products/desert-shorts",
   },
 ];
 
