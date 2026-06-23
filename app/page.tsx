@@ -6,6 +6,7 @@ import BestSiller from "./bastsiller";
 import RoundemProducts from "./roundemproduct";
 import FaqAndPayment from "./Faqandpayment ";
 import EditorialBanner from "./Editorialbanner";
+import SocialFAB from "./Socialfab";
 export default function Home() {
   return (
   <div lang="ar" dir="rtl">
@@ -13,6 +14,7 @@ export default function Home() {
     <Hero />
 <EditorialBanner />
 <RoundemProducts />
+<SocialFAB />
 <FaqAndPayment/>
     <Footer />
   </div>
