@@ -8,7 +8,8 @@ const products = [
     name: "تيشيرت الفرعون أوفرسايز",
     price: 850,
     originalPrice: 1200,
-    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+    image:
+     "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
@@ -20,7 +21,8 @@ const products = [
     name: "تيشيرت الفرعون أوفرسايز",
     price: 850,
     originalPrice: 1200,
-    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+    image:
+     "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
@@ -32,7 +34,8 @@ const products = [
     name: "تيشيرت الفرعون أوفرسايز",
     price: 850,
     originalPrice: 1200,
-    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
+    image:
+     "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (1).jpeg",
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
@@ -43,7 +46,8 @@ const products = [
     id: "4",
     name: "بنطلون النيل الكارجو",
     price: 1450,
-    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM (2).jpeg",
+    image: 
+     "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
     tag: "جديد" as const,
     sizes: ["S", "M", "L"],
@@ -54,7 +58,8 @@ const products = [
     id: "5",
     name: "شورت صحراوي كتان",
     price: 650,
-    image: "/imgs/WhatsApp Image 2026-05-10 at 9.25.20 PM.jpeg",
+    image: 
+     "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
 
     tag: "محدود" as const,
