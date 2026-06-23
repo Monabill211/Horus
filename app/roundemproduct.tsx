@@ -102,16 +102,22 @@ const products = [
 
 export default function ProductsGridAr() {
   return (
-    <section dir="rtl" className="bg-[#f5f0e8] px-6 md:px-10 py-16 font-[Cairo,sans-serif]">
-      <h2 className="text-2xl md:text-3xl font-bold tracking-wide text-[#1a1410] mb-9">
-        وصل حديثاً
-      </h2>
+  <section
+    dir="rtl"
+    className="bg-[#f5f0e8] font-[Cairo,sans-serif]"
+  >
+    <h2
+      className="text-2xl md:text-3xl font-bold tracking-wide text-[#1a1410]"
+      style={{ padding: "20px" }}
+    >
+      وصل حديثاً
+    </h2>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
-        {products.map((p) => (
-          <ProductCardAr key={p.id} product={p} />
-        ))}
-      </div>
-    </section>
-  );
+    <div className="grid grid-cols-2">
+      {products.map((p) => (
+        <ProductCardAr key={p.id} product={p} />
+      ))}
+    </div>
+  </section>
+);
 }

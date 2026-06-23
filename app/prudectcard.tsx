@@ -77,7 +77,7 @@ const [showOptions, setShowOptions] = useState(false);
         </Link>
 
         {/* السعر */}
-        <div className="flex items-center gap-2" style={{ marginBottom: "16px" }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: "28px" }}>
           {product.originalPrice && (
             <span className="text-[13px] text-[#8a8a8a] line-through">
               {product.originalPrice.toLocaleString()} ج.م
@@ -93,9 +93,9 @@ const [showOptions, setShowOptions] = useState(false);
   {!showOptions ? (
     <button
       onClick={() => setShowOptions(true)}
-      className="w-full flex items-center justify-between border border-black bg-white hover:bg-gray-50 transition"
+      className="w-full flex items-center font-bold justify-between border border-black bg-white hover:bg-gray-50 transition"
       style={{
-        padding: "12px 16px",
+        padding: "5px 15px",
         fontSize: "14px",
         cursor: "pointer",
       }}
@@ -114,7 +114,7 @@ const [showOptions, setShowOptions] = useState(false);
       </svg>
     </button>
   ) : (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col gap-0 font-bold">
 
       <SelectField
         value={selectedSize}
@@ -143,7 +143,7 @@ const [showOptions, setShowOptions] = useState(false);
               ? "bg-[#c9a84c] text-[#0e0b07] border-[#c9a84c]"
               : "bg-[#0e0b07] text-white border-[#0e0b07] hover:bg-[#1a1410]"
           }`}
-          style={{ padding: "13px 0" }}
+          style={{ padding: "7px 0" }}
         >
           {adding ? "جاري التحويل للسلة..." : "أضف للسلة"}
         </button>
