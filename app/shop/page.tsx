@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import ProductCardAr, { type Product } from "../prudectcard";
 import Reveal from "../Reveal";
+import HeaderAr from "../header";
+import FooterAr from "../footer";
 
 type ShopProduct = Product & {
   category: "تيشيرت" | "بنطلون" | "شورت" | "ترنج";
@@ -167,6 +169,9 @@ export default function Shop() {
   const hasActiveFilters = activeCategory !== "الكل" || activeColors.length > 0;
 
   return (
+    <>
+    <HeaderAr />
+  
     <section dir="rtl" className="bg-[#f5f0e8] font-['Cormorant_Garamond',serif]">
       <div className="max-w-7xl mx-auto" style={{ padding: "40px clamp(20px, 4vw, 40px) 80px" }}>
 
@@ -279,6 +284,8 @@ export default function Shop() {
         </div>
       </div>
     </section>
+      <FooterAr/>
+    </>
   );
 }
 

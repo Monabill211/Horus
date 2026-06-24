@@ -14,7 +14,7 @@ const products = [
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/pharaoh-tee",
+    href: "/productdetel",
   },
   {
     id: "2",
@@ -27,7 +27,7 @@ const products = [
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/pharaoh-tee",
+    href: "/productdetel",
   },
   {
     id: "3",
@@ -40,7 +40,7 @@ const products = [
     tag: "خصم" as const,
     sizes: ["S", "M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/pharaoh-tee",
+    href: "/productdetel",
   },
   {
     id: "4",
@@ -52,7 +52,7 @@ const products = [
     tag: "جديد" as const,
     sizes: ["S", "M", "L"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/nile-cargo",
+    href: "/productdetel",
   },
   {
     id: "5",
@@ -60,12 +60,11 @@ const products = [
     price: 650,
     image: 
      "/imgs/5OIm2oqzrgJYiDe994-Sss7CVvfriQl_zgnFdXcgAYeHw03gwLV-DTZCnheJKtHfemSxdeMUVgd6jk9zMxwyc-d2HHARGv6-V4fLcQD_CM19dL5k4uLkHEuwNnWaHeDG7IHOubrnzoyDxbMz0L1lzTUR9hv-6UvUmR5wF0H1NNc.jpg",
-    hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
-
+     hoverImage: "/imgs/WhatsApp Image 2026-05-10 at 9.25.19 PM.jpeg",
     tag: "محدود" as const,
     sizes: ["M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/desert-shorts",
+    href: "/productdetel",
   },
   {
     id: "6",
@@ -78,7 +77,7 @@ const products = [
     tag: "خصم" as const,
     sizes: ["48", "50", "52", "54"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/horus-suit",
+    href: "/productdetel",
   },
     {
     id: "7",
@@ -90,7 +89,7 @@ const products = [
     tag: "محدود" as const,
     sizes: ["M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/desert-shorts",
+    href: "/productdetel",
   },  {
     id: "",
     name: "شورت صحراوي كتان",
@@ -101,7 +100,7 @@ const products = [
     tag: "محدود" as const,
     sizes: ["M", "L", "XL"],
     colors: ["أسود", "ذهبي"],
-    href: "/products/desert-shorts",
+    href: "/productdetel",
   },
 ];
 

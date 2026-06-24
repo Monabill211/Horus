@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCart } from "./cart/Cartcontext";
 
 const navLinks = [
   { label: "الرئيسية", href: "/" },
@@ -18,7 +19,7 @@ const navLinks = [
 
 export default function HeaderAr() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const cartCount = 2;
+  const { totalCount, toggleCart } = useCart();
 
   return (
     <header dir="rtl" className="bg-[#0e0b07] text-[#e8dcc8] relative font-[Cairo,sans-serif]">
@@ -57,9 +58,21 @@ export default function HeaderAr() {
 
         {/* الأزرار */}
         <div className="flex items-center gap-4">
-          <button aria-label="بحث" className="text-[#a89880] hover:text-[#c9a84c] transition-colors">
-            <SearchIcon />
+       
+          <Link href="./checkout">
+          <button
+            aria-label="السلة"
+            onClick={toggleCart}
+            className="relative flex items-center cursor-pointer text-[#a89880] hover:text-[#c9a84c] transition-colors"
+          >
+            <CartIcon />
+            {totalCount > 0 && (
+              <span className="absolute -top-1.5 -left-2 bg-[#c9a84c] text-[#0e0b07] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {totalCount}
+              </span>
+            )}
           </button>
+          </Link>
           <button
             aria-label="القائمة"
             onClick={() => setMenuOpen((v) => !v)}
