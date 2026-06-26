@@ -1,27 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
+import { createClient } from "@/app/supabase/Client";
+import HeaderAr from "../components/layout/header";
+import FooterAr from "../components/layout/footer";
+
+const statusDisplay: Record<string, string> = {
+  "قيد الانتظار": "🟡 الطلب قيد الانتظار",
+  "قيد التحضير": "🟡 جاري تجهيز الطلب",
+  "تم الشحن": "🚚 الطلب لدى شركة الشحن",
+  "تم التسليم": "✅ تم توصيل الطلب",
+  "ملغاة": "❌ تم إلغاء الطلب",
+};
 
 export default function TrackOrder() {
   const [tracking, setTracking] = useState("");
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
-  const handleTrack = () => {
+  const handleTrack = async () => {
     if (!tracking) return;
 
-    const statuses = [
-      "🟡 جاري تجهيز الطلب",
-      "🚚 الطلب لدى شركة الشحن",
-      "✅ تم توصيل الطلب",
-    ];
+    setLoading(true);
+    setNotFound(false);
 
-    const random =
-      statuses[Math.floor(Math.random() * statuses.length)];
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("orders")
+      .select("status")
+      .eq("order_number", tracking.trim())
+      .single();
 
-    setStatus(random);
+    setLoading(false);
+
+    if (error || !data) {
+      setNotFound(true);
+      setShow(true);
+      return;
+    }
+
+    setStatus(statusDisplay[data.status] ?? data.status);
     setShow(true);
   };
 
@@ -48,24 +68,26 @@ export default function TrackOrder() {
             className="text-center text-gray-400"
             style={{ marginBottom: "35px" }}
           >
-            أدخل رقم الشحنة لمعرفة حالتها.
+            أدخل رقم الطلب لمعرفة حالته. (مثال: ORD-123456)
           </p>
 
           <input
             type="text"
-            placeholder="رقم الشحنة"
+            placeholder="رقم الطلب"
             value={tracking}
             onChange={(e) => setTracking(e.target.value)}
+            dir="ltr"
             className="w-full bg-[#222] border border-gray-700 rounded-xl text-white outline-none focus:border-[#D4AF37]"
             style={{ padding: "18px", marginBottom: "25px" }}
           />
 
           <button
             onClick={handleTrack}
-            className="w-full bg-[#D4AF37] text-black font-bold rounded-xl hover:bg-yellow-500 duration-300"
+            disabled={loading}
+            className="w-full bg-[#D4AF37] text-black font-bold rounded-xl hover:bg-yellow-500 duration-300 disabled:opacity-60"
             style={{ padding: "18px" }}
           >
-            تتبع الشحنة
+            {loading ? "جاري البحث..." : "تتبع الشحنة"}
           </button>
         </div>
 
@@ -80,14 +102,14 @@ export default function TrackOrder() {
                 className="text-[#D4AF37] font-bold"
                 style={{ marginBottom: "25px", fontSize: "30px" }}
               >
-                حالة الشحنة
+                {notFound ? "غير موجود" : "حالة الشحنة"}
               </h2>
 
               <p
                 className="text-white"
                 style={{ fontSize: "22px", marginBottom: "30px" }}
               >
-                {status}
+                {notFound ? "لم نجد طلب بهذا الرقم، تأكد من الرقم وحاول تاني." : status}
               </p>
 
               <button

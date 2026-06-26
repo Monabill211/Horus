@@ -1,23 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import ProductCardAr, { type Product } from "../prudectcard";
+import { useEffect, useMemo, useState } from "react";
+import ProductCardAr, { type Product } from "../components/prudectcard";
 import Reveal from "../Reveal";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
+import HeaderAr from "../components/layout/header";
+import FooterAr from "../components/layout/footer";
+import { createClient } from "@/app/supabase/Client";
 
 type ShopProduct = Product & {
-  category: "تيشيرت" | "بنطلون" | "شورت" | "ترنج";
-  color: string;
+  category: string;
+  colors: string[];
 };
-
-const categories: Array<ShopProduct["category"] | "الكل"> = [
-  "الكل",
-  "تيشيرت",
-  "بنطلون",
-  "شورت",
-  "ترنج",
-];
 
 const colorOptions = [
   { name: "أسود", hex: "#1a1410" },
@@ -27,125 +20,60 @@ const colorOptions = [
   { name: "كحلي", hex: "#1c2b4a" },
 ];
 
-const products: ShopProduct[] = [
-  {
-    id: "1",
-    name: "تيشيرت الفرعون أوفرسايز",
-    price: 850,
-    originalPrice: 1200,
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    href: "/products/pharaoh-tee",
-    category: "تيشيرت",
-    color: "أسود",
-    colors: ["أسود"],
-  },
-  {
-    id: "2",
-    name: "تيشيرت أبيض كلاسيك",
-    price: 650,
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    href: "/products/classic-white-tee",
-    category: "تيشيرت",
-    color: "أبيض",
-    colors: ["أبيض"],
-  },
-  {
-    id: "3",
-    name: "بنطلون النيل الكارجو",
-    price: 1450,
-    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
-    sizes: ["S", "M", "L"],
-    href: "/products/nile-cargo",
-    category: "بنطلون",
-    color: "بيج",
-    colors: ["بيج"],
-  },
-  {
-    id: "4",
-    name: "بنطلون كحلي ستريت",
-    price: 1300,
-    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80",
-    sizes: ["M", "L", "XL"],
-    href: "/products/navy-street-pants",
-    category: "بنطلون",
-    color: "كحلي",
-    colors: ["كحلي"],
-  },
-  {
-    id: "5",
-    name: "شورت صحراوي كتان",
-    price: 650,
-    image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&q=80",
-    sizes: ["M", "L", "XL"],
-    href: "/products/desert-shorts",
-    category: "شورت",
-    color: "بيج",
-    colors: ["بيج"],
-  },
-  {
-    id: "6",
-    name: "شورت أسود رياضي",
-    price: 580,
-    image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&q=80",
-    sizes: ["S", "M", "L"],
-    href: "/products/black-sport-shorts",
-    category: "شورت",
-    color: "أسود",
-    colors: ["أسود"],
-  },
-  {
-    id: "7",
-    name: "ترنج حورس الرياضي",
-    price: 2100,
-    originalPrice: 2600,
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
-    sizes: ["M", "L", "XL"],
-    href: "/products/horus-tracksuit",
-    category: "ترنج",
-    color: "ذهبي",
-    colors: ["ذهبي"],
-  },
-  {
-    id: "8",
-    name: "ترنج أسود كلاسيك",
-    price: 1950,
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    href: "/products/classic-black-tracksuit",
-    category: "ترنج",
-    color: "أسود",
-    colors: ["أسود"],
-  },
-  {
-    id: "9",
-    name: "تيشيرت ذهبي مطرز",
-    price: 920,
-    image: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80",
-    sizes: ["M", "L", "XL"],
-    href: "/products/gold-embroidered-tee",
-    category: "تيشيرت",
-    color: "ذهبي",
-    colors: ["ذهبي"],
-  },
-  {
-    id: "10",
-    name: "بنطلون أسود ضيق",
-    price: 1250,
-    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
-    sizes: ["S", "M", "L"],
-    href: "/products/black-slim-pants",
-    category: "بنطلون",
-    color: "أسود",
-    colors: ["أسود"],
-  },
-];
-
 export default function Shop() {
-  const [activeCategory, setActiveCategory] = useState<ShopProduct["category"] | "الكل">("الكل");
+  const [products, setProducts] = useState<ShopProduct[]>([]);
+  const [categoryNames, setCategoryNames] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [activeCategory, setActiveCategory] = useState<string>("الكل");
   const [activeColors, setActiveColors] = useState<string[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    setLoading(true);
+    const supabase = createClient();
+
+    // الفئات - عشان قايمة الفلتر تبقى ديناميكية
+    const { data: cats } = await supabase.from("categories").select("id, name");
+    const categoryMap: Record<string, string> = {};
+    cats?.forEach((c: any) => (categoryMap[c.id] = c.name));
+    setCategoryNames(cats?.map((c: any) => c.name) ?? []);
+
+    // المنتجات + ألوانها
+    const { data, error } = await supabase
+      .from("products")
+      .select("*, product_colors(color_name)")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.log(error);
+      setLoading(false);
+      return;
+    }
+
+    const mapped: ShopProduct[] = (data ?? []).map((p: any) => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      originalPrice: p.original_price ?? undefined,
+      image: p.image_url,
+      hoverImage: p.hover_image_url ?? undefined,
+      sizes: p.sizes ?? [],
+      colors: (p.product_colors ?? []).map((c: any) => c.color_name),
+      href: `/productdetel/${p.id}`,
+      category: categoryMap[p.category_id] ?? "",
+    }));
+
+    setProducts(mapped);
+    setLoading(false);
+  }
+
+  const categories = useMemo(() => ["الكل", ...categoryNames], [categoryNames]);
 
   const toggleColor = (name: string) => {
     setActiveColors((prev) =>
@@ -161,10 +89,11 @@ export default function Shop() {
   const filtered = useMemo(() => {
     return products.filter((p) => {
       const categoryMatch = activeCategory === "الكل" || p.category === activeCategory;
-      const colorMatch = activeColors.length === 0 || activeColors.includes(p.color);
+      const colorMatch =
+        activeColors.length === 0 || activeColors.some((c) => p.colors.includes(c));
       return categoryMatch && colorMatch;
     });
-  }, [activeCategory, activeColors]);
+  }, [products, activeCategory, activeColors]);
 
   const hasActiveFilters = activeCategory !== "الكل" || activeColors.length > 0;
 
@@ -202,6 +131,7 @@ export default function Shop() {
           {/* ══════════ الفلاتر - ديسكتوب ══════════ */}
           <aside className="hidden lg:block">
             <FiltersPanel
+              categories={categories}
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
               activeColors={activeColors}
@@ -214,10 +144,10 @@ export default function Shop() {
           {/* ══════════ المنتجات ══════════ */}
           <div>
             <p className="text-[13px] italic text-[#8a7e6f]" style={{ marginBottom: "20px" }}>
-              {filtered.length} منتج
+              {loading ? "جاري التحميل..." : `${filtered.length} منتج`}
             </p>
 
-            {filtered.length === 0 ? (
+            {!loading && filtered.length === 0 ? (
               <div className="text-center" style={{ padding: "80px 0" }}>
                 <p className="text-[15px] italic text-[#8a7e6f]" style={{ marginBottom: "16px" }}>
                   لا توجد منتجات تطابق الفلاتر المختارة
@@ -266,6 +196,7 @@ export default function Shop() {
           </div>
 
           <FiltersPanel
+            categories={categories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             activeColors={activeColors}
@@ -293,6 +224,7 @@ export default function Shop() {
    لوحة الفلاتر (مشتركة بين الديسكتوب والدرج)
 ───────────────────────────────────────── */
 function FiltersPanel({
+  categories,
   activeCategory,
   setActiveCategory,
   activeColors,
@@ -300,8 +232,9 @@ function FiltersPanel({
   hasActiveFilters,
   clearFilters,
 }: {
-  activeCategory: ShopProduct["category"] | "الكل";
-  setActiveCategory: (c: ShopProduct["category"] | "الكل") => void;
+  categories: string[];
+  activeCategory: string;
+  setActiveCategory: (c: string) => void;
   activeColors: string[];
   toggleColor: (name: string) => void;
   hasActiveFilters: boolean;

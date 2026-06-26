@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Reveal from "../Reveal";
 import HeaderAr from "../header";
-import FooterAr from "../footer";
+import FooterAr from "../components/layout/footer";
 
 /* ─────────────────────────────────────────
    بيانات المنتج (تجريبية - بدّلها بالـ API)

@@ -1,5 +1,5 @@
 import HeaderAr from "../header";
-import FooterAr from "../footer";
+import FooterAr from "../components/layout/footer";
 
 export default function ShippingPolicy() {
   return (

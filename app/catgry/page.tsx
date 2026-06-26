@@ -1,6 +1,6 @@
 import React from "react";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
+import HeaderAr from "../components/layout/header";
+import FooterAr from "../components/layout/footer";
 import Image from "next/image";
 
 export default function Page() {

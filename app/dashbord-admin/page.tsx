@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Sidebar from "./saidbar";
 import Topbar from "./navbar";
-import OverviewTab from "./Overviewtab ";
+import OverviewTab from "./Overviewtab";
 import ProductsTab from "./add/page";
 import CategoriesTab from "./add-catygre/page";
 import OrdersTab from "./Orderstab";
-import MessagesTab from "./Messagestab ";
+import MessagesTab from "./Messagestab";
 import SettingsTab from "./setting/page";
+import ReportsTab from "./Reportstab";
+
 import { pageTitles, type Tab } from "./data";
 
 export default function Dashboard() {
@@ -27,6 +29,8 @@ export default function Dashboard() {
           {tab === "categories" && <CategoriesTab />}
           {tab === "orders" && <OrdersTab />}
           {tab === "messages" && <MessagesTab />}
+          {tab === "reports" && <ReportsTab />}
+
           {tab === "settings" && <SettingsTab />}
         </main>
       </div>

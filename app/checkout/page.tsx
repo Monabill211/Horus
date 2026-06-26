@@ -3,27 +3,110 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../cart/Cartcontext";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
+import { createOrder } from "@/app/supabase/orders.client";
+import HeaderAr from "../components/layout/header";
+import FooterAr from "../components/layout/footer";
 
 export default function Checkout() {
   const router = useRouter();
   const { items, subtotal, clearCart, updateQuantity, removeItem } = useCart();
   const [submitting, setSubmitting] = useState(false);
   const [payment, setPayment] = useState<"cod" | "card">("cod");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [placedOrderNumber, setPlacedOrderNumber] = useState<string | null>(null);
 
   const shipping = subtotal > 0 ? 60 : 0;
   const total = subtotal + shipping;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    // هنا تحط استدعاء API الحقيقي لحفظ الطلب
-    setTimeout(() => {
+    setErrorMsg("");
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const order = await createOrder({
+        customerName: formData.get("name") as string,
+        phone: formData.get("phone") as string,
+        governorate: formData.get("governorate") as string,
+        address: formData.get("address") as string,
+        paymentMethod: payment === "cod" ? "الدفع عند الاستلام" : "دفع إلكتروني",
+        shippingCost: shipping,
+        items: items.map((item) => ({
+          productName: item.name,
+          color: item.color,
+          size: item.size,
+          quantity: item.quantity,
+          unitPrice: item.price,
+        })),
+      });
+
       clearCart();
-      router.push("/order-confirmed");
-    }, 1000);
+      setPlacedOrderNumber(order.order_number);
+    } catch (err: any) {
+  console.log("ERROR =>", err);
+  console.log("MESSAGE =>", err?.message);
+  console.log("DETAILS =>", err?.details);
+  console.log("HINT =>", err?.hint);
+
+  setErrorMsg(err?.message || "حصل خطأ أثناء تأكيد الطلب");
+}
+     finally {
+      setSubmitting(false);
+    }
   };
+
+  /* ══════════ رسالة تأكيد الطلب بعد الإرسال ══════════ */
+  if (placedOrderNumber) {
+    return (
+      <>
+        <HeaderAr />
+        <div
+          dir="rtl"
+          className="flex flex-col items-center justify-center text-center bg-[#f7f4ee] font-[Cairo,sans-serif]"
+          style={{ minHeight: "70vh", padding: "60px 24px" }}
+        >
+          <div
+            className="flex items-center justify-center rounded-full bg-white shadow-sm"
+            style={{ width: "76px", height: "76px", marginBottom: "24px" }}
+          >
+            <CheckCircleIcon />
+          </div>
+
+          <h1
+            className="font-['Cinzel',serif] text-2xl font-bold text-[#171310]"
+            style={{ marginBottom: "10px" }}
+          >
+            تم استلام طلبك بنجاح
+          </h1>
+
+          <p className="text-[14px] text-[#6e6358]" style={{ marginBottom: "18px" }}>
+            هنتواصل معاك على رقم الهاتف لتأكيد الطلب، وهيوصلك خلال 2-5 أيام عمل.
+          </p>
+
+          <div
+            className="bg-white rounded-xl shadow-sm flex items-center gap-3"
+            style={{ padding: "14px 24px", marginBottom: "28px" }}
+          >
+            <span className="text-[12px] text-[#8a7e6f]">رقم الطلب</span>
+            <span className="font-['Cinzel',serif] text-[15px] font-bold text-[#c9a84c]" dir="ltr">
+              {placedOrderNumber}
+            </span>
+          </div>
+
+          <button
+            onClick={() => router.push("/shop")}
+            className="font-['Cinzel',serif] text-[12px] tracking-[0.15em] text-[#171310] border-b border-[#171310] hover:text-[#c9a84c] hover:border-[#c9a84c] transition-colors"
+            style={{ paddingBottom: "4px" }}
+          >
+            متابعة التسوق ←
+          </button>
+        </div>
+        <FooterAr />
+      </>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -62,7 +145,7 @@ export default function Checkout() {
         <div className="bg-white border-b border-[#1a1410]/8">
           <div
             className="max-w-5xl mx-auto flex items-center justify-center"
-            style={{ padding: "22px 24px", gap: "10px",margin:"auto" }}
+            style={{ padding: "22px 24px", gap: "10px", margin: "auto" }}
           >
             <Step label="السلة" state="done" />
             <StepLine />
@@ -74,7 +157,7 @@ export default function Checkout() {
 
         <div
           className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8"
-          style={{ padding: "36px 24px 64px",margin:"auto"  }}
+          style={{ padding: "36px 24px 64px", margin: "auto" }}
         >
 
           {/* ══════════ فورم الشحن والدفع ══════════ */}
@@ -88,15 +171,15 @@ export default function Checkout() {
               <form id="checkout-form" onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field label="الاسم بالكامل" icon={<UserIcon />}>
-                    <input required type="text" placeholder="اسمك بالكامل" className="input-field" style={fieldStyle} />
+                    <input name="name" required type="text" placeholder="اسمك بالكامل" className="input-field" style={fieldStyle} />
                   </Field>
                   <Field label="رقم الهاتف" icon={<PhoneIcon />}>
-                    <input required type="tel" placeholder="01xxxxxxxxx" className="input-field" style={fieldStyle} dir="ltr" />
+                    <input name="phone" required type="tel" placeholder="01xxxxxxxxx" className="input-field" style={fieldStyle} dir="ltr" />
                   </Field>
                 </div>
 
                 <Field label="المحافظة" icon={<MapPinIcon />}>
-                  <select required className="input-field" style={fieldStyle} defaultValue="">
+                  <select name="governorate" required className="input-field" style={fieldStyle} defaultValue="">
                     <option value="" disabled>اختر المحافظة</option>
                     <option>القاهرة</option>
                     <option>الجيزة</option>
@@ -106,8 +189,10 @@ export default function Checkout() {
                 </Field>
 
                 <Field label="العنوان بالتفصيل" icon={<HomeIcon />}>
-                  <textarea required rows={3} placeholder="اسم الشارع، رقم المبنى، علامة مميزة..." className="input-field resize-none" style={fieldStyle} />
+                  <textarea name="address" required rows={3} placeholder="اسم الشارع، رقم المبنى، علامة مميزة..." className="input-field resize-none" style={fieldStyle} />
                 </Field>
+
+                {errorMsg && <p className="text-[12.5px] text-rose-600">{errorMsg}</p>}
               </form>
             </div>
 
@@ -258,7 +343,7 @@ export default function Checkout() {
 ───────────────────────────────────────── */
 function Step({ label, state }: { label: string; state: "done" | "active" | "pending" }) {
   return (
-    <div className="flex items-center" style={{ gap: "8px",margin:"auto" }}>
+    <div className="flex items-center" style={{ gap: "8px", margin: "auto" }}>
       <span
         className={`flex items-center justify-center rounded-full font-bold transition-colors ${
           state === "done"
@@ -375,6 +460,15 @@ function CheckIcon({ size = 12 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
       <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" strokeWidth="1.6">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8 12.5l2.8 2.8L16 9.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Reveal from "../Reveal";
-import HeaderAr from "../header";
-import FooterAr from "../footer";
+import HeaderAr from "../components/layout/header";
+import FooterAr from "../components/layout/footer";
+import { Message } from "@/app/supabase/Messages";
+
 
 const subjects = [
   "استفسار عن منتج",

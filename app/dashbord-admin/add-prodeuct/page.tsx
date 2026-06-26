@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, Plus, UploadCloud, Check } from "lucide-react";
+import { createClient } from "@/app/supabase/Client";
 
 const allSizes = ["S", "M", "L", "XL", "XXL"];
 
@@ -12,8 +13,6 @@ const colorPalette = [
   { name: "بيج", hex: "#cdb38a" },
   { name: "كحلي", hex: "#1c2b4a" },
 ];
-
-type ColorImages = Record<string, string | null>; // اسم اللون -> رابط preview للصورة
 
 export default function AddProductModal({
   open,
@@ -29,7 +28,12 @@ export default function AddProductModal({
   const [description, setDescription] = useState("");
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [colorImages, setColorImages] = useState<ColorImages>({});
+
+  // لازم نفصل الملف الحقيقي (للرفع) عن رابط المعاينة (للعرض بس)
+  const [colorFiles, setColorFiles] = useState<Record<string, File>>({});
+  const [colorPreviews, setColorPreviews] = useState<Record<string, string>>({});
+
+  const [loading, setLoading] = useState(false);
 
   const toggleSize = (size: string) => {
     setSelectedSizes((prev) =>
@@ -40,9 +44,13 @@ export default function AddProductModal({
   const toggleColor = (colorName: string) => {
     setSelectedColors((prev) => {
       if (prev.includes(colorName)) {
-        // إلغاء اختيار اللون - شيل صورته كمان
-        setColorImages((imgs) => {
-          const next = { ...imgs };
+        setColorFiles((f) => {
+          const next = { ...f };
+          delete next[colorName];
+          return next;
+        });
+        setColorPreviews((p) => {
+          const next = { ...p };
           delete next[colorName];
           return next;
         });
@@ -54,8 +62,8 @@ export default function AddProductModal({
 
   const handleColorImage = (colorName: string, file: File | null) => {
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setColorImages((prev) => ({ ...prev, [colorName]: url }));
+    setColorFiles((prev) => ({ ...prev, [colorName]: file }));
+    setColorPreviews((prev) => ({ ...prev, [colorName]: URL.createObjectURL(file) }));
   };
 
   const resetForm = () => {
@@ -66,22 +74,89 @@ export default function AddProductModal({
     setDescription("");
     setSelectedSizes([]);
     setSelectedColors([]);
-    setColorImages({});
+    setColorFiles({});
+    setColorPreviews({});
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // هنا تحط استدعاء Supabase الحقيقي لحفظ المنتج + رفع الصور لكل لون
-    console.log({ name, price, originalPrice, stock, description, selectedSizes, selectedColors, colorImages });
-    resetForm();
-    onClose();
+
+    if (selectedColors.length === 0) {
+      alert("اختار لون واحد على الأقل وصورته");
+      return;
+    }
+    const missing = selectedColors.find((c) => !colorFiles[c]);
+    if (missing) {
+      alert(`لازم ترفع صورة للون "${missing}"`);
+      return;
+    }
+
+    setLoading(true);
+    const supabase = createClient();
+
+    try {
+      // 1) رفع صورة كل لون على Storage
+      const uploadedColors: { name: string; hex: string; url: string }[] = [];
+
+      for (const colorName of selectedColors) {
+        const color = colorPalette.find((c) => c.name === colorName)!;
+        const file = colorFiles[colorName];
+        const fileExt = file.name.split(".").pop() || "jpg";
+        const fileName = `products/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(fileName);
+        uploadedColors.push({ name: colorName, hex: color.hex, url: urlData.publicUrl });
+      }
+
+      // 2) حفظ المنتج - صورة أول لون = الصورة الرئيسية، صورة ثاني لون (لو موجود) = صورة الهوفر
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .insert({
+          name,
+          description,
+          price: Number(price),
+          original_price: originalPrice ? Number(originalPrice) : null,
+          stock: Number(stock),
+          sizes: selectedSizes,
+          image_url: uploadedColors[0].url,
+          hover_image_url: uploadedColors[1]?.url ?? null,
+        })
+        .select()
+        .single();
+
+      if (productError) throw productError;
+
+      // 3) حفظ صورة كل لون في product_colors
+      const colorRows = uploadedColors.map((c) => ({
+        product_id: product.id,
+        color_name: c.name,
+        color_hex: c.hex,
+        image_url: c.url,
+      }));
+
+      const { error: colorsError } = await supabase.from("product_colors").insert(colorRows);
+      if (colorsError) throw colorsError;
+
+      resetForm();
+      onClose();
+    } catch (err: any) {
+      console.log(err);
+      alert("حصل خطأ: " + (err?.message ?? "حاول تاني"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ padding: "20px" }}>
-      {/* الخلفية */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={() => {
@@ -90,7 +165,6 @@ export default function AddProductModal({
         }}
       />
 
-      {/* البانل */}
       <div
         dir="rtl"
         className="relative bg-white rounded-xl w-full max-w-lg overflow-y-auto"
@@ -123,6 +197,53 @@ export default function AddProductModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="مثال: تيشيرت الفرعون أوفرسايز"
+              className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+              style={{ padding: "10px 14px" }}
+            />
+          </div>
+
+          {/* السعر + السعر قبل الخصم */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[12px] text-[#5c5346]" style={{ marginBottom: "8px" }}>
+                السعر
+              </label>
+              <input
+                type="number"
+                required
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="850"
+                className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+                style={{ padding: "10px 14px" }}
+              />
+            </div>
+            <div>
+              <label className="block text-[12px] text-[#5c5346]" style={{ marginBottom: "8px" }}>
+                السعر قبل الخصم
+              </label>
+              <input
+                type="number"
+                value={originalPrice}
+                onChange={(e) => setOriginalPrice(e.target.value)}
+                placeholder="1200"
+                className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+                style={{ padding: "10px 14px" }}
+              />
+            </div>
+          </div>
+
+          {/* المخزون */}
+          <div>
+            <label className="block text-[12px] text-[#5c5346]" style={{ marginBottom: "8px" }}>
+              المخزون
+            </label>
+            <input
+              type="number"
+              required
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              placeholder="24"
               className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
               style={{ padding: "10px 14px" }}
             />
@@ -219,7 +340,7 @@ export default function AddProductModal({
               <div className="flex flex-col gap-3">
                 {selectedColors.map((colorName) => {
                   const color = colorPalette.find((c) => c.name === colorName)!;
-                  const preview = colorImages[colorName];
+                  const preview = colorPreviews[colorName];
 
                   return (
                     <div
@@ -266,10 +387,11 @@ export default function AddProductModal({
           {/* حفظ */}
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 bg-[#c9a84c] text-[#171310] font-['Cinzel',serif] text-[13px] font-bold tracking-[0.15em] rounded-lg hover:bg-[#dbbf6a] transition-colors"
+            disabled={loading}
+            className="flex items-center justify-center gap-2 bg-[#c9a84c] text-[#171310] font-['Cinzel',serif] text-[13px] font-bold tracking-[0.15em] rounded-lg hover:bg-[#dbbf6a] transition-colors disabled:opacity-60"
             style={{ padding: "12px 0", marginTop: "4px" }}
           >
-            <Plus size={15} /> حفظ المنتج
+            <Plus size={15} /> {loading ? "جاري الحفظ..." : "حفظ المنتج"}
           </button>
         </form>
 

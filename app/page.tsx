@@ -1,18 +1,14 @@
-import Header from "./header";
-import Footer from "./footer";
-import Hero from "./hero";
-import CategoriesSlider from "./slidercatgry";
-import BestSiller from "./bastsiller";
-import RoundemProducts from "./roundemproduct";
-import FaqAndPayment from "./Faqandpayment ";
-import EditorialBanner from "./Editorialbanner";
-import SocialFAB from "./Socialfab";
+import Header from "./components/layout/header";
+import Footer from "./components/layout/footer";
+import Hero from "./components/home/hero";
+import RoundemProducts from "./components/home/roundemproduct";
+import FaqAndPayment from "./components/home/Faqandpayment ";
+import SocialFAB from "./components/layout/Socialfab";
 export default function Home() {
   return (
   <div lang="ar" dir="rtl">
     <Header />
     <Hero />
-{/* <EditorialBanner /> */}
 <RoundemProducts />
 <SocialFAB />
 <FaqAndPayment/>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useCart } from "./cart/Cartcontext";
+import { useCart } from "../cart/Cartcontext";
 
 export type Product = {
   id: string;

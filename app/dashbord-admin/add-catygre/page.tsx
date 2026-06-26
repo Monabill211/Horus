@@ -1,68 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
-import { categoriesData } from "../data";
-import { IconButton } from "../Shared";
-import AddCategoryModal from "../add-catygre/page";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/app/supabase/Client";
 
-export default function CategoriesTab() {
-  const [modalOpen, setModalOpen] = useState(false);
+export default function AddCategoryPage() {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!imageFile) return alert("ارفع صورة للفئة");
+
+    setLoading(true);
+    const supabase = createClient();
+
+    // رفع الصورة
+    const fileExt = imageFile.name.split(".").pop() || "jpg";
+    const fileName = `categories/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+    const { error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(fileName, imageFile);
+
+    if (uploadError) {
+      console.log(uploadError);
+      alert("حصل خطأ في رفع الصورة: " + uploadError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(fileName);
+
+    // حفظ الفئة
+    const { error } = await supabase.from("categories").insert({
+      name,
+      image_url: urlData.publicUrl,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      alert("حصل خطأ في حفظ الفئة");
+      return;
+    }
+
+    router.push("/dashbord-admin");
+  };
 
   return (
-    <div>
-      <div className="flex items-center justify-between" style={{ marginBottom: "24px" }}>
+    <div dir="rtl" style={{ padding: "40px", maxWidth: "420px" }}>
+      <h1 className="font-['Cinzel',serif] text-2xl font-bold" style={{ marginBottom: "24px" }}>
+        إضافة فئة
+      </h1>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
         <div>
-          <h1 className="font-['Cinzel',serif] text-2xl font-bold">الفئات</h1>
-          <p className="text-[13px] text-[#8a7e6f]" style={{ marginTop: "4px" }}>إدارة فئات المنتجات</p>
+          <label className="block text-[13px]" style={{ marginBottom: "8px" }}>اسم الفئة</label>
+          <input
+            type="text"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="مثال: هودي"
+            className="w-full border border-[#1a1410]/20 rounded-lg text-[14px] outline-none"
+            style={{ padding: "12px 14px" }}
+          />
         </div>
+
+        <div>
+          <label className="block text-[13px]" style={{ marginBottom: "8px" }}>صورة الفئة</label>
+          <input
+            type="file"
+            accept="image/*"
+            required
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              setImageFile(file);
+              setImagePreview(file ? URL.createObjectURL(file) : null);
+            }}
+          />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="معاينة"
+              style={{ width: "160px", marginTop: "12px", borderRadius: "8px" }}
+            />
+          )}
+        </div>
+
         <button
-          onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 bg-[#c9a84c] text-[#171310] font-semibold text-[13px] rounded-lg hover:bg-[#dbbf6a] transition-colors"
-          style={{ padding: "10px 16px" }}
+          type="submit"
+          disabled={loading}
+          className="bg-[#171310] text-white rounded-lg font-bold"
+          style={{ padding: "12px 0" }}
         >
-          <Plus size={14} /> إضافة فئة
+          {loading ? "جاري الحفظ..." : "حفظ الفئة"}
         </button>
-      </div>
-
-      <div className="relative max-w-sm" style={{ marginBottom: "20px" }}>
-        <span className="absolute" style={{ right: "12px", top: "50%", transform: "translateY(-50%)" }}>
-          <Search size={14} color="#8a7e6f" />
-        </span>
-        <input
-          type="text"
-          placeholder="ابحث عن فئة..."
-          className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none bg-white"
-          style={{ padding: "10px 36px 10px 14px" }}
-        />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        {categoriesData.map((c) => (
-          <div
-            key={c.name}
-            className="bg-white rounded-xl border border-[#1a1410]/6 flex items-center justify-between"
-            style={{ padding: "16px" }}
-          >
-            <div className="flex items-center gap-4">
-              <img src={c.image} alt={c.name} className="object-cover rounded-lg" style={{ width: "56px", height: "56px" }} />
-              <div>
-                <p className="font-semibold text-[14px]">{c.name}</p>
-                <p className="text-[11px] text-[#8a7e6f]">{c.en}</p>
-                <p className="text-[11px] text-[#8a7e6f]" style={{ marginTop: "2px" }}>عدد المنتجات: {c.count}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <IconButton><Pencil size={13} /></IconButton>
-              <IconButton danger><Trash2 size={13} /></IconButton>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <style>{`.input-field:focus { border-color:#c9a84c; box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }`}</style>
-
-      {/* <AddCategoryModal open={modalOpen} onClose={() => setModalOpen(false)} /> */}
+      </form>
     </div>
   );
 }

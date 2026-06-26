@@ -1,4 +1,4 @@
-import { LayoutGrid, Package, FolderOpen, ShoppingCart, Mail, Settings } from "lucide-react";
+import { LayoutGrid, Package, FolderOpen, ShoppingCart, Mail, Settings, BarChart3 } from "lucide-react";
 
 /* ─────────────────────────────────────────
    بيانات تجريبية - بدّلها باستدعاء Supabase
@@ -35,11 +35,36 @@ export const messagesData = [
   { name: "Hana Saeed", email: "hana@mailinator.com", subject: "استرجاع أو استبدال", message: "عايزة أستبدل المقاس بـ M.", date: "٢٠٢٦/٦/١٤", read: false },
 ];
 
+export const visitsData = [
+  { day: "السبت", visits: 142 },
+  { day: "الأحد", visits: 168 },
+  { day: "الإثنين", visits: 121 },
+  { day: "الثلاثاء", visits: 195 },
+  { day: "الأربعاء", visits: 173 },
+  { day: "الخميس", visits: 210 },
+  { day: "الجمعة", visits: 248 },
+];
+
+export const topSellingProducts = [
+  { name: "تيشيرت الفرعون أوفرسايز", unitsSold: 86, revenue: 73100 },
+  { name: "ترنج حورس الرياضي", unitsSold: 52, revenue: 109200 },
+  { name: "بنطلون النيل الكارجو", unitsSold: 47, revenue: 68150 },
+  { name: "تيشيرت ذهبي مطرز", unitsSold: 34, revenue: 31280 },
+  { name: "شورت صحراوي كتان", unitsSold: 29, revenue: 18850 },
+];
+
+export const trafficSources = [
+  { name: "سوشيال ميديا", value: 42, color: "#c9a84c" },
+  { name: "بحث جوجل", value: 27, color: "#171310" },
+  { name: "زيارة مباشرة", value: 19, color: "#8a7e6f" },
+  { name: "إحالة من موقع آخر", value: 12, color: "#d4c9b0" },
+];
+
 /* ─────────────────────────────────────────
    التابات والنافيجيشن
 ───────────────────────────────────────── */
 
-export type Tab = "overview" | "products" | "categories" | "orders" | "messages" | "settings";
+export type Tab = "overview" | "products" | "categories" | "orders" | "messages" | "reports" | "settings";
 
 export const navItems: { tab: Tab; label: string; icon: React.ReactNode }[] = [
   { tab: "overview", label: "لوحة التحكم", icon: <LayoutGrid size={17} /> },
@@ -47,6 +72,7 @@ export const navItems: { tab: Tab; label: string; icon: React.ReactNode }[] = [
   { tab: "categories", label: "الفئات", icon: <FolderOpen size={17} /> },
   { tab: "orders", label: "الطلبات", icon: <ShoppingCart size={17} /> },
   { tab: "messages", label: "رسائل العملاء", icon: <Mail size={17} /> },
+  { tab: "reports", label: "التقارير", icon: <BarChart3 size={17} /> },
   { tab: "settings", label: "الإعدادات", icon: <Settings size={17} /> },
 ];
 
@@ -56,5 +82,6 @@ export const pageTitles: Record<Tab, string> = {
   categories: "الفئات",
   orders: "الطلبات",
   messages: "رسائل العملاء",
+  reports: "التقارير",
   settings: "الإعدادات",
 };
