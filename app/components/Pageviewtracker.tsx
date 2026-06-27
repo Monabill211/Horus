@@ -40,7 +40,7 @@ export default function PageViewTracker() {
         referrer: ref || null,
         source,
         visitor_id: visitorId,
-      });
+      } as any);
     }
 
     logVisit();
