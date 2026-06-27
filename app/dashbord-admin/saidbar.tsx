@@ -2,6 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { navItems, type Tab } from "./data";
+import Link from "next/link";
 
 export default function Sidebar({
   activeTab,
@@ -50,18 +51,19 @@ export default function Sidebar({
       <div style={{ padding: "16px", borderTop: "1px solid rgba(26,20,16,0.08)" }}>
         <div style={{ padding: "0 8px", marginBottom: "12px" }}>
           <p className="text-[11px] text-[#8a7e6f]">مسجل دخول كـ</p>
-          <p className="text-[12.5px] font-semibold">ahmed@gmail.com</p>
+          <p className="text-[12.5px] font-semibold">حورس</p>
           <span className="inline-block text-[10px] text-[#c9a84c] font-bold" style={{ marginTop: "4px" }}>
             Admin
           </span>
         </div>
+        <Link href="/" >
         <button
           className="w-full flex items-center justify-center gap-2 bg-[#e8503a] text-white text-[13px] font-semibold rounded-lg hover:bg-[#d4432e] transition-colors"
           style={{ padding: "10px 0" }}
         >
           <LogOut size={15} />
           تسجيل خروج
-        </button>
+        </button></Link>
       </div>
     </aside>
   );

@@ -5,25 +5,25 @@ import { useState } from "react";
 const socialLinks = [
   {
     name: "واتساب",
-    href: "https://wa.me/201001234567",
+    href: "https://wa.me/01223281534",
     bg: "#25D366",
     icon: <WhatsAppIcon />,
   },
   {
     name: "إنستجرام",
-    href: "https://instagram.com/horus",
+    href: "https://www.instagram.com/horas_al_malik",
     bg: "linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4)",
     icon: <InstagramIcon />,
   },
   {
     name: "تيك توك",
-    href: "https://tiktok.com/@horus",
+    href: "https://www.tiktok.com/@horas_al_malik?_r=1&_t=ZS-95fJnYRNanl",
     bg: "#000000",
     icon: <TikTokIcon />,
   },
   {
     name: "فيسبوك",
-    href: "https://facebook.com/horus",
+    href: "https://www.facebook.com/share/1CWyiEa9At/?mibextid=wwXIfr",
     bg: "#1877F2",
     icon: <FacebookIcon />,
   },

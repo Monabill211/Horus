@@ -1,6 +1,53 @@
+"use client";
+
+import { useState } from "react";
+import { createClient } from "@/app/supabase/Client";
 import { SettingsField } from "../Shared";
 
 export default function SettingsTab() {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage(null);
+
+    if (newPassword !== confirmPassword) {
+      setMessage({ text: "كلمة السر الجديدة وتأكيدها غير متطابقين", error: true });
+      return;
+    }
+    if (newPassword.length < 6) {
+      setMessage({ text: "كلمة السر لازم تكون 6 حروف/أرقام على الأقل", error: true });
+      return;
+    }
+
+    setSaving(true);
+    const supabase = createClient();
+    const { data, error } = await supabase.rpc("update_admin_password", {
+      old_password: oldPassword,
+      new_password: newPassword,
+    });
+    setSaving(false);
+
+    if (error) {
+      console.log(error);
+      setMessage({ text: "حصل خطأ، حاول تاني", error: true });
+      return;
+    }
+
+    if (data === true) {
+      setMessage({ text: "تم تغيير كلمة السر بنجاح ✓", error: false });
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } else {
+      setMessage({ text: "كلمة السر القديمة غلط", error: true });
+    }
+  };
+
   return (
     <div>
       <div style={{ marginBottom: "24px" }}>
@@ -52,6 +99,63 @@ export default function SettingsTab() {
             <SettingsField label="شحن باقي المحافظات (ج.م)" defaultValue="70" />
             <SettingsField label="مدة التوصيل المتوقعة" defaultValue="2-5 أيام عمل" />
           </div>
+        </div>
+
+        {/* تغيير كلمة سر الأدمن */}
+        <div className="bg-white rounded-xl border border-[#1a1410]/6" style={{ padding: "24px" }}>
+          <h3 className="font-['Cinzel',serif] text-[13px] tracking-wide" style={{ marginBottom: "18px" }}>
+            تغيير كلمة سر لوحة التحكم
+          </h3>
+          <form onSubmit={handleChangePassword} className="flex flex-col gap-4">
+            <div>
+              <label className="block text-[11px] text-[#8a7e6f]" style={{ marginBottom: "6px" }}>كلمة السر الحالية</label>
+              <input
+                type="password"
+                required
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                className="w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+                style={{ padding: "10px 14px" }}
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] text-[#8a7e6f]" style={{ marginBottom: "6px" }}>كلمة السر الجديدة</label>
+              <input
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+                style={{ padding: "10px 14px" }}
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] text-[#8a7e6f]" style={{ marginBottom: "6px" }}>تأكيد كلمة السر الجديدة</label>
+              <input
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
+                style={{ padding: "10px 14px" }}
+              />
+            </div>
+
+            {message && (
+              <p className={`text-[12.5px] ${message.error ? "text-rose-600" : "text-emerald-600"}`}>
+                {message.text}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={saving}
+              className="bg-[#171310] text-[#e8dcc8] font-['Cinzel',serif] text-[12.5px] font-bold tracking-[0.15em] rounded-lg hover:bg-[#2a201a] transition-colors disabled:opacity-60"
+              style={{ padding: "11px 0" }}
+            >
+              {saving ? "جاري الحفظ..." : "تغيير كلمة السر"}
+            </button>
+          </form>
         </div>
       </div>
 

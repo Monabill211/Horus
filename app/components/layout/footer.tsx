@@ -53,7 +53,7 @@ export default function FooterAr() {
 
           <div className="flex gap-3 mt-5" style={{marginTop:"20px"}}>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/horas_al_malik"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="إنستجرام"
@@ -62,16 +62,16 @@ export default function FooterAr() {
               <InstagramIcon />
             </a>
             <a
-              href="https://x.com"
+              href="https://www.facebook.com/share/1CWyiEa9At/?mibextid=wwXIfr"
               target="_blank"
-              rel="noopener noreferrer"
-              aria-label="إكس"
+              
+              aria-label=""
               className="w-9 h-9 flex items-center justify-center border border-[#c9a84c]/30 hover:border-[#c9a84c] hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] transition-colors"
             >
-              <XIcon />
+             <FacebookIcon />
             </a>
             <a
-              href="https://tiktok.com"
+              href="https://www.tiktok.com/@horas_al_malik?_r=1&_t=ZS-95fJnYRNanl"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="تيك توك"
@@ -190,10 +190,10 @@ function InstagramIcon() {
   );
 }
 
-function XIcon() {
+function FacebookIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/>
     </svg>
   );
 }

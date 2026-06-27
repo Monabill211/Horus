@@ -3,6 +3,7 @@ import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
 import { useState, useEffect } from "react";
 import { createClient } from "@/app/supabase/Client";
+import Socialfab from "../components/layout/Socialfab";
 
 export default function Page() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -77,7 +78,7 @@ async function fetchCategories() {
         
 
       </section>
-
+ <Socialfab />
       <FooterAr />
     </>
   );

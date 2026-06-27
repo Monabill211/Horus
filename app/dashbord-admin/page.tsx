@@ -10,6 +10,7 @@ import OrdersTab from "./Orderstab";
 import MessagesTab from "./Messagestab";
 import SettingsTab from "./setting/page";
 import ReportsTab from "./Reportstab";
+import AdminGate from "./Admingate";
 
 import { pageTitles, type Tab } from "./data";
 
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const [tab, setTab] = useState<Tab>("overview");
 
   return (
+        <AdminGate>
+
     <div dir="rtl" className="flex min-h-screen bg-[#f7f4ee] text-[#171310] font-['Cairo',sans-serif]">
       <Sidebar activeTab={tab} onTabChange={setTab} />
 
@@ -35,5 +38,7 @@ export default function Dashboard() {
         </main>
       </div>
     </div>
+        </AdminGate>
+
   );
 }

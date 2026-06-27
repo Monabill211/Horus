@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Reveal from "../Reveal";
-import HeaderAr from "../header";
+import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
+
 
 /* ─────────────────────────────────────────
    بيانات المنتج (تجريبية - بدّلها بالـ API)
@@ -416,8 +418,9 @@ export default function ProductDetail() {
           </table>
         </div>
       </div>
- 
+  <Socialfab />
     </section>         <FooterAr />
+         
     </>
   );
 }

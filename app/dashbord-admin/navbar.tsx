@@ -10,7 +10,7 @@ export default function Topbar({ title }: { title: string }) {
     >
       <div>
         <h2 className="font-['Cinzel',serif] text-[16px] tracking-wide">{title}</h2>
-        <p className="text-[11px] text-[#8a7e6f]">٢٠٢٦/٦/٢٠</p>
+       
       </div>
 
       <div className="flex items-center gap-4">
@@ -30,7 +30,7 @@ export default function Topbar({ title }: { title: string }) {
             أ
           </div>
           <div className="hidden sm:block">
-            <p className="text-[12.5px] font-semibold leading-none">ahmed</p>
+            <p className="text-[12.5px] font-semibold leading-none">حورس</p>
             <p className="text-[10px] text-[#8a7e6f]">Admin</p>
           </div>
         </div>

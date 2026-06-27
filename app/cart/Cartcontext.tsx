@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import Socialfab from "../components/layout/Socialfab";
 
 export type CartItem = {
   cartId: string; // مفتاح فريد = id المنتج + المقاس + اللون
@@ -104,6 +105,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+       <Socialfab />
     </CartContext.Provider>
   );
 }

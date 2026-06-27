@@ -5,6 +5,8 @@ import ProductCardAr, { type Product } from "../components/prudectcard";
 import Reveal from "../Reveal";
 import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
+
 import { createClient } from "@/app/supabase/Client";
 
 type ShopProduct = Product & {
@@ -216,6 +218,7 @@ export default function Shop() {
       </div>
     </section>
       <FooterAr/>
+       <Socialfab />
     </>
   );
 }

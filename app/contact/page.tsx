@@ -4,6 +4,8 @@ import { useState } from "react";
 import Reveal from "../Reveal";
 import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
+
 import { createClient } from "@/app/supabase/Client";
 
 const subjects = [
@@ -94,7 +96,7 @@ export default function Contact() {
               <InfoCard
                 icon={<PhoneIcon />}
                 title="اتصل بنا"
-                value="+20 100 123 4567"
+                value="+201223281534"
                 ltr
               />
             </Reveal>
@@ -102,7 +104,7 @@ export default function Contact() {
               <InfoCard icon={<MailIcon />} title="البريد الإلكتروني" value="support@horus.com" ltr dark />
             </Reveal>
             <Reveal delay={160}>
-              <InfoCard icon={<ClockIcon />} title="ساعات العمل" value="يومياً 10ص - 11م" />
+              <InfoCard icon={<ClockIcon />} title="ساعات العمل" value="يومياً 1م -  1ص" />
             </Reveal>
           </div>
         </div>
@@ -211,7 +213,7 @@ export default function Contact() {
                     الفرع الرئيسي
                   </h3>
                   <p className="italic text-[15px] text-[#6e6358] leading-7">
-                    15 شارع التحرير، الدقي، الجيزة، جمهورية مصر العربية
+                   القاهرة منشية ناصر المساكن الجديدة محطة براند حورس
                   </p>
                 </div>
               </Reveal>
@@ -229,7 +231,7 @@ export default function Contact() {
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-[#c9a84c]">
                     <PinIcon />
-                    <span className="italic text-[13px] text-[#a89880]">الدقي، الجيزة</span>
+                    <span className="italic text-[13px] text-[#a89880]">منشية ناصر القاهرة</span>
                   </div>
                 </div>
               </Reveal>
@@ -244,10 +246,10 @@ export default function Contact() {
                     تابعنا
                   </p>
                   <div className="flex gap-3">
-                    <SocialLink href="https://instagram.com"><InstagramIcon /></SocialLink>
-                    <SocialLink href="https://x.com"><XIcon /></SocialLink>
-                    <SocialLink href="https://tiktok.com"><TikTokIcon /></SocialLink>
-                    <SocialLink href="tel:+201001234567"><PhoneOutlineIcon /></SocialLink>
+                    <SocialLink href="https://www.instagram.com/horas_al_malik"><InstagramIcon /></SocialLink>
+                    <SocialLink href="https://www.facebook.com/share/1CWyiEa9At/?mibextid=wwXIfr"><FacebookIcon />,</SocialLink>
+                    <SocialLink href="https://www.tiktok.com/@horas_al_malik?_r=1&_t=ZS-95fJnYRNanl"><TikTokIcon /></SocialLink>
+                    <SocialLink href="tel:+201223281534"><PhoneOutlineIcon /></SocialLink>
                   </div>
                 </div>
               </Reveal>
@@ -263,6 +265,7 @@ export default function Contact() {
       `}</style>
     </div>
        <FooterAr />
+        <Socialfab />
     </>
   );
 }
@@ -404,14 +407,13 @@ function InstagramIcon() {
   );
 }
 
-function XIcon() {
+function FacebookIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/>
     </svg>
   );
 }
-
 function TikTokIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

@@ -1,5 +1,6 @@
-import HeaderAr from "../header";
+import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
 
 export default function CarePage() {
   return (
@@ -164,7 +165,7 @@ export default function CarePage() {
 
         </div>
       </section>
-
+ <Socialfab />
       <FooterAr />
     </>
   );

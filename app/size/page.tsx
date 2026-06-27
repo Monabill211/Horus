@@ -1,5 +1,6 @@
-import HeaderAr from "../header";
+import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
 
 export default function SizeGuide() {
   return (
@@ -176,7 +177,7 @@ export default function SizeGuide() {
 
         </div>
       </section>
-
+ <Socialfab />
       <FooterAr />
     </>
   );
