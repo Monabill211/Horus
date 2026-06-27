@@ -1,4 +1,4 @@
-import HeaderAr from "../header";
+import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
 
 export default function AboutPage() {

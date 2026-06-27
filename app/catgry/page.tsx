@@ -1,32 +1,40 @@
-import React from "react";
+"use client";
 import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { createClient } from "@/app/supabase/Client";
 
 export default function Page() {
-  const categories = [
-    {
-      id: 1,
-      image: "/imgs/download.jpg",
-      name: "شورتات",
-    },
-    {
-      id: 2,
-      image: "/imgs/download (1).jpg",
-      name: "تشرتات",
-    },
-    {
-      id: 3,
-      image: "/imgs/download (2).jpg",
-      name: "بناطيل",
-    },
-    {
-      id: 4,
-      image: "/imgs/download (3).jpg",
-      name: "ترنجات",
-    },
-  ];
+  const [categories, setCategories] = useState<any[]>([]);
+    const [loadingList, setLoadingList] = useState(true);
+  
+useEffect(() => {
+  fetchCategories();
+}, []);
+  
+const supabase = createClient();
 
+useEffect(() => {
+  fetchCategories();
+}, []);
+
+async function fetchCategories() {
+  setLoadingList(true);
+
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log(error);
+    setLoadingList(false);
+    return;
+  }
+
+  setCategories(data || []);
+  setLoadingList(false);
+}
   return (
     <>
       <HeaderAr />
@@ -36,30 +44,38 @@ export default function Page() {
           الأقسام
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          {categories.map((item) => (
-            <div
-              key={item.id}
-              className="relative group overflow-hidden rounded-2xl cursor-pointer"
-            >
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={400}
-                height={500}
-                className="w-full h-80 object-cover transition duration-500 group-hover:scale-110"
-              />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/35 group-hover:bg-black/50 transition"></div>
+{loadingList ? (
+  <p className="text-center text-[#8a7e6f]">جاري التحميل...</p>
+) : categories.length === 0 ? (
+  <p className="text-center text-[#8a7e6f]">لا توجد فئات بعد</p>
+) : (
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
+    {categories.map((item) => (
+      <div
+        key={item.id}
+        className="relative group overflow-hidden rounded-2xl cursor-pointer h-[320px]"
+      >
+        <img
+          src={item.image_url}
+          alt={item.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
 
-              {/* Category Name */}
-              <h3 className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white text-2xl font-bold">
-                {item.name}
-              </h3>
-            </div>
-          ))}
-        </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/35 group-hover:bg-black/50 transition"></div>
+
+        {/* Category Name */}
+        <h3 className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white text-2xl font-bold">
+          {item.name}
+        </h3>
+      </div>
+    ))}
+  </div>
+)}
+         
+        
+
       </section>
 
       <FooterAr />

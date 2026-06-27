@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, Plus, UploadCloud, Check } from "lucide-react";
 import { createClient } from "@/app/supabase/Client";
 
@@ -21,6 +21,9 @@ export default function AddProductModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [categoryId, setCategoryId] = useState("");
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
@@ -34,6 +37,23 @@ export default function AddProductModal({
   const [colorPreviews, setColorPreviews] = useState<Record<string, string>>({});
 
   const [loading, setLoading] = useState(false);
+
+  // هات قايمة الفئات لحظة ما المودال يفتح
+  useEffect(() => {
+    if (!open) return;
+    const supabase = createClient();
+    supabase
+      .from("categories")
+      .select("id, name")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.log(error);
+          return;
+        }
+        setCategories(data ?? []);
+      });
+  }, [open]);
 
   const toggleSize = (size: string) => {
     setSelectedSizes((prev) =>
@@ -72,6 +92,7 @@ export default function AddProductModal({
     setOriginalPrice("");
     setStock("");
     setDescription("");
+    setCategoryId("");
     setSelectedSizes([]);
     setSelectedColors([]);
     setColorFiles({});
@@ -81,6 +102,10 @@ export default function AddProductModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!categoryId) {
+      alert("اختار فئة المنتج");
+      return;
+    }
     if (selectedColors.length === 0) {
       alert("اختار لون واحد على الأقل وصورته");
       return;
@@ -114,7 +139,7 @@ export default function AddProductModal({
         uploadedColors.push({ name: colorName, hex: color.hex, url: urlData.publicUrl });
       }
 
-      // 2) حفظ المنتج - صورة أول لون = الصورة الرئيسية، صورة ثاني لون (لو موجود) = صورة الهوفر
+      // 2) حفظ المنتج - مرتبط بالفئة المختارة
       const { data: product, error: productError } = await supabase
         .from("products")
         .insert({
@@ -124,6 +149,7 @@ export default function AddProductModal({
           original_price: originalPrice ? Number(originalPrice) : null,
           stock: Number(stock),
           sizes: selectedSizes,
+          category_id: categoryId,
           image_url: uploadedColors[0].url,
           hover_image_url: uploadedColors[1]?.url ?? null,
         })
@@ -200,6 +226,27 @@ export default function AddProductModal({
               className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none"
               style={{ padding: "10px 14px" }}
             />
+          </div>
+
+          {/* الفئة - من الفئات الحقيقية اللي ضايفها */}
+          <div>
+            <label className="block text-[12px] text-[#5c5346]" style={{ marginBottom: "8px" }}>
+              الفئة
+            </label>
+            <select
+              required
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              className="input-field w-full border border-[#1a1410]/12 rounded-lg text-[13px] outline-none bg-white"
+              style={{ padding: "10px 14px" }}
+            >
+              <option value="" disabled>
+                {categories.length === 0 ? "لا توجد فئات - ضيف فئة الأول" : "اختار الفئة"}
+              </option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
           </div>
 
           {/* السعر + السعر قبل الخصم */}

@@ -1,3 +1,5 @@
+import { Link } from "lucide-react";
+
 export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -25,12 +27,12 @@ export default function Hero() {
           </h1>
 
        
-
+<a href="/shop">
           <button className="mt-10 bg-white text-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-400 hover:text-black transition-all duration-300 hover:scale-105 shadow-2xl"
           style={{padding: ' 20px 70px ', marginTop: '40px'}}
           >
             اشترِي الآن
-          </button>
+          </button></a>
         </div>
       </div>
     </section>

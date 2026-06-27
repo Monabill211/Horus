@@ -4,8 +4,7 @@ import { useState } from "react";
 import Reveal from "../Reveal";
 import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
-import { Message } from "@/app/supabase/Messages";
-
+import { createClient } from "@/app/supabase/Client";
 
 const subjects = [
   "استفسار عن منتج",
@@ -17,10 +16,32 @@ const subjects = [
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // هنا تحط استدعاء الـ API الحقيقي لإرسال الرسالة
+    const form = e.currentTarget; // ← لازم نخدها قبل أي await
+    setSending(true);
+
+    const formData = new FormData(form);
+    const supabase = createClient();
+
+    const { error } = await supabase.from("messages").insert({
+      name: formData.get("name") as string,
+      phone: formData.get("phone") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    });
+
+    setSending(false);
+
+    if (error) {
+      console.log(error);
+      alert("حصل خطأ أثناء إرسال الرسالة، حاول تاني");
+      return;
+    }
+
+    form.reset(); // ← دلوقتي form لسه عنصر حقيقي مش null
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   };
@@ -110,6 +131,7 @@ export default function Contact() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <Field label="الاسم">
                       <input
+                        name="name"
                         type="text"
                         placeholder="اسمك بالكامل"
                         required
@@ -119,6 +141,7 @@ export default function Contact() {
                     </Field>
                     <Field label="رقم الهاتف">
                       <input
+                        name="phone"
                         type="tel"
                         placeholder="01xxxxxxxxx"
                         required
@@ -128,10 +151,9 @@ export default function Contact() {
                     </Field>
                   </div>
 
-
-
                   <Field label="الموضوع">
                     <select
+                      name="subject"
                       className="input-field w-full border border-[#1a1410]/15 outline-none bg-white text-[14px]"
                       style={{ padding: "12px 16px" }}
                     >
@@ -143,6 +165,7 @@ export default function Contact() {
 
                   <Field label="الرسالة">
                     <textarea
+                      name="message"
                       rows={5}
                       placeholder="اكتب رسالتك هنا..."
                       required
@@ -153,10 +176,11 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    className="self-start bg-[#c9a84c] text-[#0e0b07] rounded-3xl cursor-pointer  font-['Cinzel',serif] text-[16px] font-bold tracking-[0.2em] hover:bg-[#dbbf6a] hover:-translate-y-0.5 transition-all shadow-[0_10px_30px_rgba(201,168,76,0.3)]"
+                    disabled={sending}
+                    className="self-start bg-[#c9a84c] text-[#0e0b07] rounded-3xl cursor-pointer  font-['Cinzel',serif] text-[16px] font-bold tracking-[0.2em] hover:bg-[#dbbf6a] hover:-translate-y-0.5 transition-all shadow-[0_10px_30px_rgba(201,168,76,0.3)] disabled:opacity-60"
                     style={{ padding: "16px 48px", margin: "4px auto" }}
                   >
-                    إرسال الرسالة
+                    {sending ? "جاري الإرسال..." : "إرسال الرسالة"}
                   </button>
 
                   <p

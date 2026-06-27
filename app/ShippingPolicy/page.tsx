@@ -1,5 +1,6 @@
-import HeaderAr from "../header";
+import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
+import Socialfab from "../components/layout/Socialfab";
 
 export default function ShippingPolicy() {
   return (
@@ -113,6 +114,7 @@ export default function ShippingPolicy() {
         </div>
       </section>
 
+      <Socialfab />
       <FooterAr />
     </>
   );

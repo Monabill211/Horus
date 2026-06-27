@@ -47,6 +47,24 @@ export default function ProductsTab() {
     fetchProducts();
   };
 
+  const handleDeleteAll = async () => {
+    if (!confirm("متأكد عايز تمسح كل المنتجات؟ الإجراء ده نهائي ومش هينفع ترجعه!")) return;
+    if (!confirm("تأكيد أخير: هتمسح كل المنتجات بدون استرجاع، متأكد؟")) return;
+
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .neq("id", "00000000-0000-0000-0000-000000000000"); // يطابق كل الصفوف الحقيقية
+
+    if (error) {
+      console.log(error);
+      alert("حصل خطأ أثناء حذف كل المنتجات: " + error.message);
+      return;
+    }
+    fetchProducts();
+  };
+
   const filtered = products.filter((p) => p.name.includes(search));
 
   return (
@@ -56,13 +74,22 @@ export default function ProductsTab() {
           <h1 className="font-['Cinzel',serif] text-2xl font-bold">المنتجات</h1>
           <p className="text-[13px] text-[#8a7e6f]" style={{ marginTop: "4px" }}>إدارة منتجات المتجر</p>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 bg-[#c9a84c] text-[#171310] font-semibold text-[13px] rounded-lg hover:bg-[#dbbf6a] transition-colors"
-          style={{ padding: "10px 16px" }}
-        >
-          <Plus size={14} /> إضافة منتج
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDeleteAll}
+            className="flex items-center gap-2 border border-rose-300 text-rose-600 font-semibold text-[13px] rounded-lg hover:bg-rose-50 transition-colors"
+            style={{ padding: "10px 16px" }}
+          >
+            <Trash2 size={14} /> مسح الكل
+          </button>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="flex items-center gap-2 bg-[#c9a84c] text-[#171310] font-semibold text-[13px] rounded-lg hover:bg-[#dbbf6a] transition-colors"
+            style={{ padding: "10px 16px" }}
+          >
+            <Plus size={14} /> إضافة منتج
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-3" style={{ margin: "20px 0" }}>
