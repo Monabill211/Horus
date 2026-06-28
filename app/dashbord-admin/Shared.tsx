@@ -33,21 +33,30 @@ export function StatCard({
   );
 }
 
-export function IconButton({ children, danger }: { children: React.ReactNode; danger?: boolean }) {
+type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  danger?: boolean;
+};
+
+export function IconButton({
+  children,
+  danger,
+  className = "",
+  ...props
+}: IconButtonProps) {
   return (
     <button
+      {...props}
       className={`flex items-center justify-center rounded-lg transition-colors ${
         danger
           ? "bg-rose-50 text-rose-600 hover:bg-rose-100"
           : "border border-[#1a1410]/12 hover:border-[#c9a84c] hover:text-[#c9a84c]"
-      }`}
+      } ${className}`}
       style={{ width: "34px", height: "34px" }}
     >
       {children}
     </button>
   );
 }
-
 export function SettingsField({
   label,
   defaultValue,
