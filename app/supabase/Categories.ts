@@ -2,8 +2,7 @@
 
 import { createClient as createServerClient } from "./Server";
 import { createClient as createBrowserClient } from "./Client";
-import type { Product, ProductColor } from "./Types";
-
+import type { Product, ProductColor, Category } from "./Types";
 export async function getCategories() {
   const supabase = await createServerClient();
   const { data, error } = await supabase
