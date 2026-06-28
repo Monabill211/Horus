@@ -170,8 +170,7 @@ export default function ReportsTab() {
                 <YAxis tick={{ fontSize: 11, fill: "#8a7e6f" }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ fontSize: "12px", border: "1px solid rgba(26,20,16,0.1)", borderRadius: "8px", fontFamily: "Cairo, sans-serif" }}
-                  formatter={(value: number) => [`${value} زيارة`, ""]}
-                />
+formatter={(value: any) => [`${value} زيارة`, ""]}                />
                 <Area type="monotone" dataKey="visits" stroke="#c9a84c" strokeWidth={2.5} fill="url(#visitsGradient)" />
               </AreaChart>
             </ResponsiveContainer>
