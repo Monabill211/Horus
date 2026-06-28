@@ -22,7 +22,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
     setError("");
 
     const supabase = createClient();
-    const { data, error: rpcError } = await supabase.rpc("check_admin_password", {
+    const { data, error: rpcError } = await (supabase.rpc as any)("check_admin_password", {
       input_password: password,
     });
 

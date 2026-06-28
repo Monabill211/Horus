@@ -26,7 +26,7 @@ export default function SettingsTab() {
 
     setSaving(true);
     const supabase = createClient();
-    const { data, error } = await supabase.rpc("update_admin_password", {
+    const { data, error } = await (supabase.rpc as any)("update_admin_password", {
       old_password: oldPassword,
       new_password: newPassword,
     });
