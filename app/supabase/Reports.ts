@@ -2,6 +2,7 @@
 
 import { createClient as createServerClient } from "./Server";
 import { createClient as createBrowserClient } from "./Client";
+import type { OrderItem, PageView } from "./Types";
 
 /* ───── تسجيل زيارة صفحة (من أي مكان في الموقع) ───── */
 
@@ -37,9 +38,11 @@ export async function getVisitsLast7Days() {
 
   if (error) throw error;
 
+  const rows = (data ?? []) as Pick<PageView, "created_at">[];
+
   // تجميع الزيارات حسب اليوم
   const grouped: Record<string, number> = {};
-  data.forEach((row) => {
+  rows.forEach((row) => {
     const day = new Date(row.created_at).toLocaleDateString("ar-EG", { weekday: "long" });
     grouped[day] = (grouped[day] ?? 0) + 1;
   });
@@ -54,9 +57,10 @@ export async function getTrafficSources() {
   const { data, error } = await supabase.from("page_views").select("source");
   if (error) throw error;
 
-  const total = data.length || 1;
+  const rows = (data ?? []) as Pick<PageView, "source">[];
+  const total = rows.length || 1;
   const counts: Record<string, number> = {};
-  data.forEach((row) => {
+  rows.forEach((row) => {
     const src = row.source ?? "direct";
     counts[src] = (counts[src] ?? 0) + 1;
   });
@@ -78,8 +82,9 @@ export async function getTopSellingProducts(limit = 5) {
 
   if (error) throw error;
 
+  const rows = (data ?? []) as Pick<OrderItem, "product_name" | "quantity" | "unit_price">[];
   const grouped: Record<string, { unitsSold: number; revenue: number }> = {};
-  data.forEach((row) => {
+  rows.forEach((row) => {
     if (!grouped[row.product_name]) {
       grouped[row.product_name] = { unitsSold: 0, revenue: 0 };
     }
