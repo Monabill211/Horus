@@ -36,7 +36,7 @@ export default function MessagesTab() {
 
     if (!msg.is_read) {
       const supabase = createClient();
-      await (supabase.from("messages").update({ is_read: true }) as any).eq("id", msg.id);
+      await (supabase.from("messages") as any).update({ is_read: true }).eq("id", msg.id);
       setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, is_read: true } : m)));
     }
   };
