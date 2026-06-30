@@ -1,33 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/app/cart/Cartcontext";
+import { createClient } from "@/app/supabase/Client";
 
-const navLinks = [
-  { label: "الرئيسية", href: "/" },
-  { label: "الفئات ", href: "/catgry" },
-  { label: "المتجر", href: "/shop" },
-  { label: "من حورس", href: "/about" },
-  { label: "تواصل مع حورس", href: "/contact" },
-  { label: "تتبع شحنتك", href: "/trakingorder" },
-  { label: "الشحن والاسترجاع", href: "/ShippingPolicy" },
-  { label: "دليل المقاسات", href: "/size" },
-  { label: "تعليمات العناية", href: "/care" },
-
+// لينكات ثابتة دايماً موجودة قبل الفئات
+const staticLinks = [
+  { label: "Home", href: "/" },
+  { label: "catgrys", href: "/catgry" },
+  { label: "shop", href: "/shop" },
 ];
 
 export default function HeaderAr() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { totalCount, toggleCart } = useCart();
 
+  const [categoryLinks, setCategoryLinks] = useState<{ label: string; href: string }[]>([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  async function fetchCategories() {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("categories")
+      .select("id, name")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const links = (data ?? []).map((c: any) => ({
+      label: c.name,
+      href: `/shop?category=${c.id}`,
+    }));
+
+    setCategoryLinks(links);
+  }
+
+  const navLinks = [...staticLinks, ...categoryLinks];
+
   return (
     <header dir="rtl" className="bg-[#0e0b07] text-[#e8dcc8] relative font-[Cairo,sans-serif]">
       {/* خط ذهبي علوي */}
       <div className="h-[2px] bg-gradient-to-r from-transparent via-[#c9a84c] to-transparent" />
-
-   
-      
 
       {/* الصف الرئيسي */}
       <div className="flex items-center justify-between px-6 md:px-10 py-5" style={{padding:"20px"}}>
@@ -38,7 +58,6 @@ export default function HeaderAr() {
             <span className="font-bold text-2xl md:text-3xl tracking-[0.3em] text-[#e8dcc8]" style={{padding:"5px"}}>
               HORAS
             </span>
-       
           </div>
         </Link>
 
@@ -46,7 +65,7 @@ export default function HeaderAr() {
         <nav className="hidden md:flex items-center gap-8  ">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.href + link.label}
               href={link.href}
               className="relative text-[16px] tracking-wide text-[#a89880] hover:text-[#e8dcc8] transition-colors group"
             >
@@ -88,7 +107,7 @@ export default function HeaderAr() {
         <nav className="md:hidden flex flex-col gap-4 px-6 py-5 border-t border-[#c9a84c]/20">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.href + link.label}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               className="text-sm tracking-wide text-[#a89880] hover:text-[#c9a84c] transition-colors"
@@ -128,8 +147,6 @@ function CartIcon() {
     </svg>
   );
 }
-
-
 
 function MenuIcon() {
   return (

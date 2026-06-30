@@ -128,7 +128,7 @@ export default function ProductCardAr({ product }: { product: Product }) {
           }`}
           style={{ padding: "7px 0" }}
         >
-          {added ? "تمت الإضافة ✓" : "أضف للسلة"}
+          {added ? "Done Add✓" : "ADD TO CART"}
         </button>
       </div>
     </div>

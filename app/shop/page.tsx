@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCardAr, { type Product } from "../components/prudectcard";
 import Reveal from "../Reveal";
 import HeaderAr from "../components/layout/header";
 import FooterAr from "../components/layout/footer";
-import Socialfab from "../components/layout/Socialfab";
-
 import { createClient } from "@/app/supabase/Client";
 
 type ShopProduct = Product & {
@@ -23,8 +22,12 @@ const colorOptions = [
 ];
 
 export default function Shop() {
+  const searchParams = useSearchParams();
+  const categoryIdFromUrl = searchParams.get("category");
+
   const [products, setProducts] = useState<ShopProduct[]>([]);
   const [categoryNames, setCategoryNames] = useState<string[]>([]);
+  const [categoryIdToName, setCategoryIdToName] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   const [activeCategory, setActiveCategory] = useState<string>("الكل");
@@ -35,6 +38,13 @@ export default function Shop() {
     fetchData();
   }, []);
 
+  // لما الفئات تتحمّل ويكون فيه ?category=id في اللينك، فعّل الفلتر المناسب تلقائي
+  useEffect(() => {
+    if (categoryIdFromUrl && categoryIdToName[categoryIdFromUrl]) {
+      setActiveCategory(categoryIdToName[categoryIdFromUrl]);
+    }
+  }, [categoryIdFromUrl, categoryIdToName]);
+
   async function fetchData() {
     setLoading(true);
     const supabase = createClient();
@@ -44,6 +54,7 @@ export default function Shop() {
     const categoryMap: Record<string, string> = {};
     cats?.forEach((c: any) => (categoryMap[c.id] = c.name));
     setCategoryNames(cats?.map((c: any) => c.name) ?? []);
+    setCategoryIdToName(categoryMap);
 
     // المنتجات + ألوانها
     const { data, error } = await supabase
@@ -218,7 +229,6 @@ export default function Shop() {
       </div>
     </section>
       <FooterAr/>
-       <Socialfab />
     </>
   );
 }

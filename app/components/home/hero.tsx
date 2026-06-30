@@ -23,7 +23,7 @@ export default function Hero() {
       <div className="relative z-10 flex h-full items-center justify-center">
         <div className="text-center px-6" style={{padding: '20px'}}>
           <h1 className="text-yellow-400 text-5xl md:text-7xl font-extrabold uppercase tracking-widest animate-fadeIn">
-            حورس 
+            Horas
           </h1>
 
        
@@ -31,7 +31,7 @@ export default function Hero() {
           <button className="mt-10 bg-white text-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-400 hover:text-black transition-all duration-300 hover:scale-105 shadow-2xl"
           style={{padding: ' 20px 70px ', marginTop: '40px'}}
           >
-            اشترِي الآن
+             Shop Now
           </button></a>
         </div>
       </div>

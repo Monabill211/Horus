@@ -102,7 +102,7 @@ export default function Shop() {
     <section dir="rtl" className="bg-[#f5f0e8] font-['Cormorant_Garamond',serif]">
           <div>
             <h2 className="font-['Cinzel',serif] text-3xl font-bold tracking-wide text-[#1a1410]">
-              وصل حديثا
+             ALL IN STOCK
             </h2>
           </div>
           {/* ══════════ المنتجات ══════════ */}
