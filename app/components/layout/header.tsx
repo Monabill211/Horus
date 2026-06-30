@@ -10,6 +10,7 @@ const staticLinks = [
   { label: "Home", href: "/" },
   { label: "catgrys", href: "/catgry" },
   { label: "shop", href: "/shop" },
+  { label: "trakingorder", href: "/trakingorder" },
 ];
 
 export default function HeaderAr() {

@@ -98,22 +98,28 @@ export default function FooterAr() {
 
       {/* Links row */}
       <div
-        className="flex flex-wrap items-center justify-center"
+        className="flex flex-wrap items-center justify-center "
         style={{ padding: "16px", borderBottom: "1px solid #0e0b07", gap: "28px" }}
       >
         <Link href="/about" style={{ fontSize: "13px" }} className="hover:underline">
           ABOUT HORUS
         </Link>
+        <Link href="/trakingorder" style={{ fontSize: "13px" }} className="hover:underline">
+          TRAKING ORDER 
+        </Link>
+        <Link href="/care" style={{ fontSize: "13px" }} className="hover:underline">
+          CARE PRODUCTS
+        </Link>
         <Link href="/contact" style={{ fontSize: "13px" }} className="hover:underline">
           CONTACT
         </Link>
-        <Link href="/privacy" style={{ fontSize: "13px" }} className="hover:underline">
+        <Link href="/PrivacyPolicy" style={{ fontSize: "13px" }} className="hover:underline">
           PRIVACY
         </Link>
-        <Link href="/shipping" style={{ fontSize: "13px" }} className="hover:underline">
+        <Link href="/shop" style={{ fontSize: "13px" }} className="hover:underline">
           SHIPPING
         </Link>
-        <Link href="/refund" style={{ fontSize: "13px" }} className="hover:underline">
+        <Link href="/ShippingPolicy" style={{ fontSize: "13px" }} className="hover:underline">
           REFUND
         </Link>
       </div>
@@ -123,16 +129,16 @@ export default function FooterAr() {
         className="flex items-center justify-center"
         style={{ padding: "16px", borderBottom: "1px solid #0e0b07", gap: "20px" }}
       >
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <a href="https://www.instagram.com/horas_al_malik" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <InstagramIcon />
         </a>
-        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <a   href="https://www.tiktok.com/@horas_al_malik?_r=1&_t=ZS-95fJnYRNanl" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
           <TikTokIcon />
         </a>
-        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-          <YouTubeIcon />
+        <a   href="https://www.facebook.com/share/1CWyiEa9At/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+           <FacebookIcon />
         </a>
-        <a href="https://wa.me/201001234567" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <a href="https://wa.me/01223281534" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
           <WhatsAppIcon />
         </a>
       </div>
@@ -143,13 +149,10 @@ export default function FooterAr() {
         style={{ padding: "16px", borderBottom: "1px solid #0e0b07", gap: "8px" }}
       >
         <PaymentBadge bg="#1A1F71" text="VISA" />
-        <PaymentBadge bg="#000" text="Apple Pay" textColor="#000" white />
-        <PaymentBadge bg="#fff" text="G Pay" textColor="#000" border />
+        <PaymentBadge bg="#" text="cash" textColor="#21dd1b" white />
+        <PaymentBadge bg="#fff" text="vodafone cash" textColor="#dd1b1b" border />
         <PaymentBadge bg="#000" text="Mastercard" />
-        <PaymentBadge bg="#003087" text="PayPal" />
-        <PaymentBadge bg="#5A31F4" text="Shop" />
-        <PaymentBadge bg="#00B14F" text="UnionPay" />
-        <PaymentBadge bg="#1A1F71" text="VISA" />
+   
       </div>
 
       {/* Copyright */}
@@ -209,10 +212,10 @@ function TikTokIcon() {
   );
 }
 
-function YouTubeIcon() {
+function FacebookIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/>
     </svg>
   );
 }
